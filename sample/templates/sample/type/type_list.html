@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <table class="table table-hover">
+    <thead>
+      <tr class="table table-secondary">
+        <th><h3>Types</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if type_list %}
+      {% for types in type_list %}
+      <tr class="table table-secondary">
+      <th>
+        <a href="{{ types.get_absolute_url }}">{{ types.name }}</a>
+      </th>
+    </tr>
+      {% endfor %}
+      <tr class="table table-secondary">
+        <th>
+          {% if perms.sample.add_type %}
+            <a href={% url "type-create" %}>Create type</a>
+          {% endif %}
+        </th>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

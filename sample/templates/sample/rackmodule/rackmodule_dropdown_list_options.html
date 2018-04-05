@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for rackmodule in rackmodules %}
+  <option value="{{ rackmodule.pk }}">{{ rackmodule.name }}</option>
+{% endfor %}

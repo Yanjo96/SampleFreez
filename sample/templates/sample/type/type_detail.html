@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href={% url "type" %}>Type</a></li>
+  <li class="breadcrumb-item">{{ type.name }}</li>
+</ol>
+<h2>{{ type.name }}</h2>
+{% if perms.sample.change_type %}
+  <a href={% url "type-update" type.id %} class="btn btn-secondary">update</a>
+{% endif %}
+{% if perms.sample.delete_type %}
+  <a href={% url "type-delete" type.id %} class="btn btn-outline-danger">delete</a>
+{% endif %}
+{% endblock %}

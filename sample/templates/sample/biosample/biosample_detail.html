@@ -1,0 +1,144 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href={% url "biosample" %}>Biosample</a></li>
+  <li class="breadcrumb-item">{{ biosample.name }}</li>
+</ol>
+
+<h2>{{ biosample.name }}</h2>
+<table class="table table-hover">
+<tbody>
+  <tr class="table-secondary">
+    <th>Type:</th>
+    <td>{{ biosample.type.name }}</td>
+  </tr>
+  <tr class="table-secondary">
+    <th>Person ID:</th>
+    <td>{{ biosample.whoose }}</td>
+  </tr>
+  <tr class="table-secondary">
+    <th>Contact person:</th>
+    <td>{{ biosample.contactPerson }}</td>
+  </tr>
+  {% if biosample.type.name == "Blood" %}
+  <tr class="table-secondary">
+    <th colspan="2">Wie wird Blut entnommen?</th>
+  </tr>
+  <tr class="table-secondary">
+    <th>State:</th>
+    <td>{{ biosample.state }}</td>
+  </tr>
+  <tr class="table-secondary">
+    <th>Sober:</th>
+    <td>{{ biosample.sober }}</td>
+  </tr>
+  <tr class="table-secondary">
+    <th colspan="2">Weitere Verarbeitungsschritte</th>
+  </tr>
+  <tr class="table-secondary">
+    <th>Zentrifugation:</th>
+    <td>{% if biosample.centrifugate %} Yes{% else %} No{% endif %}</td>
+  </tr>
+  <tr class="table-secondary">
+    <th>Pipettierung:</th>
+    <td>{% if biosample.pipet %} Yes{% else %} No{% endif %}</td>
+  </tr>
+  <tr class="table-secondary">
+    <th>Comment:</th>
+    <td>{{ biosample.commentstep|linebreaks }}</td>
+  </tr>
+  {% if biosample.plasma or biosample.seroes %}
+  <tr class="table-secondary">
+    <th colspan="2">Alliquotierung, Anzahl</th>
+  </tr>
+  {% if biosample.plasma %}
+  <tr class="table-secondary">
+    <th>Plasma:</th>
+    <td>{{ biosample.plasmanumber }}</td>
+  </tr>
+  {% endif %}
+  {% if biosample.seroes %}
+  <tr class="table-secondary">
+    <th>Seroes:</th>
+    <td>{{ biosample.seroesnumber }}</td>
+  </tr>
+  {% endif %}
+  <tr class="table-secondary">
+    <th>Comment</th>
+    <td>{{ biosample.commentaliquot|linebreaks }}</td>
+  </tr>
+  {% endif %}
+  <tr class="table-secondary">
+    <th colspan="2">Frozen</th>
+  </tr>
+  <tr class="table-secondary">
+    <th>Aliquots:</th>
+    {% if biosample.aliquot %}
+      <td>Yes</td>
+    {% else %}
+      <td>No</td>
+    {% endif %}
+  </tr>
+  <tr class="table-secondary">
+    <th>Tubes:</th>
+    {% if biosample.tubes %}
+      <td>Yes</td>
+    {% else %}
+      <td>No</td>
+    {% endif %}
+  </tr>
+  <tr class="table-secondary">
+    <th>Transfer der Blutproben</th>
+    <td>{{ biosample.transfer|linebreaks }}</td>
+  </tr>
+  {% endif %}
+  <tr class="table-secondary">
+    <th>Places:</th>
+    <td>
+      <ul>
+        {% for tubes in biosample.tube_set.all %}
+        <li>
+          <a href = {% url "freezer-detail" tubes.box.freezer.id %}>{{ tubes.box.freezer.name }}</a> /
+          <a href = {% url "compartment-detail" tubes.box.freezer.id tubes.box.compartment.id %}>{{ tubes.box.compartment.name }}</a> /
+          {% if tubes.box.rack %}
+            <a href = {% url "rack-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id %}>{{ tubes.box.rack.name }}</a> /
+            <a href = {% url "rackmodule-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id %}>{{ tubes.box.rackmodule.name }}</a> /
+            <a href = {% url "box-r-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id %}>{{ tubes.box.name }}</a> /
+            <a href = {% url "tube-r-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id%}>{{ tubes.name }}</a>
+          {% else %}
+            <a href = {% url "box-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id %}>{{ tubes.box.name }}</a> /
+            <a href = {% url "tube-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>{{ tubes.name }}
+          {% endif %}
+          {% if perms.sample.change_tube %}
+            {% if tubes.box.rack %}
+              <a href = {% url "tube-r-update" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %}>update</a>
+            {% else %}
+              <a href = {% url "tube-c-update" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>update</a>
+            {% endif %}
+          {% endif %}
+          {% if perms.sample.delete_tube %}
+            {% if tubes.box.rack %}
+              <a href = {% url "tube-r-delete" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %}>delete</a>
+            {% else %}
+              <a href = {% url "tube-c-delete" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>delete</a>
+            {% endif %}
+          {% endif %}
+        </li>
+        {% endfor %}
+        {% if perms.sample.add_tube %}
+          <li><a href={% url "tube-b-create" biosample.id %}>add tube</a></li>
+        {% endif %}
+      </ul>
+    </td>
+  </tbody>
+</table>
+
+{% if perms.sample.change_biosample %}
+  <a href={% url "biosample-update" biosample.id %} class="btn btn-primary">update</a>
+{% endif %}
+{% if perms.sample.delete_biosample %}
+  <a href={% url "biosample-delete" biosample.id %} class="btn btn-primary">delete</a>
+{% endif %}
+{% endblock %}

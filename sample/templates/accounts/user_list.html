@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<table class="table table-hover">
+  <thead>
+    <tr class="table-secondary">
+      <th>Username</th>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>Email</th>
+      <th>Group</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if user_list %}
+      {% for user in user_list %}
+        <tr class="table-secondary">
+          <td>{{ user.username }}</td>
+          <td>{{ user.first_name }}</td>
+          <td>{{ user.last_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.groups.name }}</td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+
+{% endblock %}

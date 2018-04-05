@@ -1,0 +1,190 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% if freezer_list %}
+    <table class="table table-hover">
+      <thead>
+        <tr class="table-secondary">
+          <th><h3>Freezers</h3></th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for freezer in freezer_list %}
+            <tr class="table-secondary">
+              <td><a href="{{ freezer.get_absolute_url }}">{{ freezer.name }}</a></td>
+            </tr>
+          {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if compartment_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th><h3>Compartments</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for compartment in compartment_list %}
+          <tr class="table-secondary">
+            <td><a href={% url 'compartment-detail' compartment.freezer.id compartment.id %}>{{ compartment.freezer.name }} / {{ compartment.name }}</a></td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if rack_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th><h3>Racks</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for rack in rack_list %}
+          <tr class="table-secondary">
+            <td>
+              <a href={% url 'rack-detail' rack.compartment.freezer.id rack.compartment.id rack.id %}>
+              {{ rack.compartment.freezer.name }} /
+              {{ rack.compartment.name }} /
+              {{ rack.name }}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if rackmodule_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th><h3>Rackmodules</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for rackmodule in rackmodule_list %}
+          <tr class="table-secondary">
+            <td>
+              <a href={% url 'rackmodule-detail' rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %}>
+              {{ rackmodule.rack.compartment.freezer.name }} /
+              {{ rackmodule.rack.compartment.name }} /
+              {{ rackmoduel.rack.name }} /
+              {{ rackmodule.name }}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if box_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th><h3>Boxes</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for box in box_list %}
+          <tr class="table-secondary">
+            {% if box.rack %}
+            <td>
+              <a href={% url 'box-r-detail' box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id %}>
+              {{ box.freezer.name }} /
+              {{ box.compartment.name }} /
+              {{ box.rack.name }} /
+              {{ box.rackmodule.name }} /
+              {{ box.name }}
+              </a>
+            </td>
+            {% else %}
+            <td>
+              <a href={% url 'box-c-detail' box.freezer.id box.compartment.id box.id %}>
+              {{ box.freezer.name }} /
+              {{ box.compartment.name }} /
+              {{ box.name }}
+              </a>
+            </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if tube_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th><h3>Tubes</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for tube in tube_list %}
+        <tr class="table-secondary">
+          {% if tube.box.rack %}
+          <td>
+            <a href={% url 'tube-r-detail' tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id %}>
+            {{ tube.box.freezer.name }} /
+            {{ tube.box.compartment.name }} /
+            {{ tube.box.rack.name }} /
+            {{ tube.box.rackmodule.name }} /
+            {{ tube.box.name }}
+            </a>
+          </td>
+          {% else %}
+          <td>
+            <a href={% url 'tube-c-detail' tube.box.freezer.id tube.box.compartment.id tube.box.id tube.id %}>
+            {{ tube.box.freezer.name }} /
+            {{ tube.box.compartment.name }} /
+            {{ tube.box.name }} /
+            {{ tube.name }}
+            </a>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if biosample_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th><h3>Biosamples</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for biosample in biosample_list %}
+          <tr class="table-secondary">
+            <td><a href={% url 'biosample-detail' biosample.id %}>{{ biosample.name }}</a></td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if type_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th><h3>Types</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for type in type_list %}
+          <tr class="table-secondary">
+            <td><a href={% url 'type-detail' type.id %}> {{ type.name }}</td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% endblock %}

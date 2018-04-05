@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for compartment in compartments %}
+  <option value="{{ compartment.pk }}">{{ compartment.name }}</option>
+{% endfor %}

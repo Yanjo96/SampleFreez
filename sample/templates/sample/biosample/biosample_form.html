@@ -1,0 +1,88 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+<form method="post" id="biosampleForm" novalidate>
+  {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <table class="table table-hover">
+  <tbody>
+  {% for field in form.visible_fields %}
+      <tr class="table-secondary">
+      <th>{{ field.label_tag }}</th>
+      <td>
+      {% if form.is_bound %}
+        {% if field.errors %}
+            {% render_field field class="form-control is-invalid" %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+            {% endfor %}
+        {% else %}
+            {% render_field field class="form-control is-valid" %}
+        {% endif %}
+      {% else %}
+          {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>
+<a href={% url 'popup' %} class="js-popup-link">bring up a popup</a>
+<div id="popup"></div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <a href={% url 'biosample' %} class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+    var ids = ["#id_state","#id_sober","#id_centrifugate","#id_pipet","#id_commentstep","#id_plasma","#id_plasmanumber","#id_seroes","#id_seroesnumber","#id_commentaliquot","#id_aliquot","#id_tubes","#id_transfer"];
+    if($('id_type') != '1'){
+      for(i=0;i<ids.length;i++){
+        $(ids[i]).parent().parent().hide();
+      }
+    }
+
+    $('#id_type').change(function() {
+      switch ($(this).val()) {
+        case '1':
+        for(i=0;i<ids.length;i++){
+          $(ids[i]).parent().parent().show();
+        }
+          break;
+        default:
+        for(i=0;i<ids.length;i++){
+          $(ids[i]).parent().parent().hide();
+        }
+          break;
+      }
+    });
+
+  $(function(){
+    $('.js-popup-link').click(function(e){
+      e.preventDefault()
+      $('#popup').dialog({modal: true}).dialog('open').load(this.href)
+    })
+  })
+{% endblock %}

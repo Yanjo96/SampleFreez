@@ -1,0 +1,45 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href={% url "freezer-detail" tube.box.freezer.id %}>{{ tube.box.freezer.name }}</a></li>
+  <li class="breadcrumb-item"><a href={% url "compartment-detail" tube.box.freezer.id tube.box.compartment.id %}>{{ tube.box.compartment.name }}</a></li>
+  {% if tube.box.rack %}
+  <li class="breadcrumb-item"><a href={% url "rack-detail" tube.box.freezer.id tube.box.compartment.id tube.box.rack.id %}>{{ tube.box.rack.name }}</a></li>
+  <li class="breadcrumb-item"><a href={% url "rackmodule-detail" tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id %}>{{ tube.box.rackmodule.name }}</a></li>
+  <li class="breadcrumb-item"><a href={% url "box-r-detail" tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id %}>{{ tube.box.name }}</a></li>
+  {% else %}
+  <li class="breadcrumb-item"><a href={% url "box-c-detail" tube.box.freezer.id tube.box.compartment.id tube.box.id %}>{{ tube.box.name }}</a></li>
+  {% endif %}
+  <li class="breadcrumb-item">{{ tube.name }}</li>
+</ol>
+
+<p><strong>Temperature:</strong> {{ tube.box.freezer.temperature }}°C</p>
+
+    <p>In this tube is <a href="{{ tube.biosample.get_absolute_url }}">{{ tube.biosample.name }}</a>.</p>
+    <p>You can find the Tube in
+      {{ tube.box.freezer.name }} /
+      {{ tube.box.compartment.name }} /
+      {% if tube.box.rack %}
+        {{ tube.box.rack.name }} /
+        {{ tube.box.rackmodule.name }} /
+      {% endif %}
+      {{ tube.box.name }}
+      on position x y
+    </p>
+
+{% if perms.sample.change_tube %}
+  {% if tube.box.rack %}
+    <a href={% url "tube-r-update" tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id%} class="btn btn-primary">update</a>
+  {% else %}
+    <a href={% url "tube-c-update" tube.box.freezer.id tube.box.compartment.id tube.box.id tube.id %} class="btn btn-primary">update</a>
+  {% endif %}
+{% endif %}
+{% if perms.sample.delete_tube %}
+  {% if tube.box.rack %}
+    <a href={% url "tube-r-delete" tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id %} class="btn btn-primary">delete</a>
+  {% else %}
+    <a href={% url "tube-c-delete" tube.box.freezer.id tube.box.compartment.id tube.box.id tube.id %} class="btn btn-primary">delete</a>
+  {% endif %}
+{% endif %}
+{% endblock %}

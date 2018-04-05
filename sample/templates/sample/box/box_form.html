@@ -1,0 +1,113 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  {% load widget_tweaks %}
+
+  <form method="post" id="boxForm" data-compartments-url="{% url 'ajax_load_compartments' %}" data-racks-url="{% url 'ajax_load_racks'  %}" data-rackmodules-url="{% url 'ajax_load_rackmodules'  %}" novalidate>
+    {% csrf_token %}
+
+    {% for hidden_field in form.hidden_fields %}
+      {{ hidden_field }}
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">
+        {% for error in form.non_field_errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <table class="table table-hover">
+    <tbody>
+    {% for field in form.visible_fields %}
+        <tr class="table-secondary">
+        <th>{{ field.label_tag }}</th>
+        <td>
+        {% if form.is_bound %}
+          {% if field.errors %}
+              {% render_field field class="form-control is-invalid" %}
+              {% for error in field.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+              {% endfor %}
+          {% else %}
+              {% render_field field class="form-control is-valid" %}
+          {% endif %}
+        {% else %}
+            {% render_field field class="form-control" %}
+        {% endif %}
+
+        {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href={% url 'freezer' %} class="btn btn-outline-secondary">Cancel</a>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+
+      var ids = ["#id_freezer","#id_compartment","#id_rack","#id_rackmodule"];
+
+      for(i=0;i<ids.length;i++){
+        $(ids[i]).parent().parent().hide();
+      }
+
+
+    $("#id_freezer").change(function () {
+      var url = $("#boxForm").attr("data-compartments-url");  // get the url of the `load_cities` view
+      var freezerId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'freezer': freezerId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_compartment").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+
+    $("#id_compartment").change(function () {
+      var url = $("#boxForm").attr("data-racks-url");  // get the url of the `load_cities` view
+      var compartmentId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'compartment': compartmentId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_rack").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+
+    $("#id_rack").change(function () {
+      var url = $("#boxForm").attr("data-rackmodules-url");  // get the url of the `load_cities` view
+      var rackId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'rack': rackId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_rackmodule").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+{% endblock %}

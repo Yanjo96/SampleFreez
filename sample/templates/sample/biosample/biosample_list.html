@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <table class="table table-hover">
+      <thead>
+        <tr class="table table-secondary">
+          <th><h3>Biosamples<h3></th>
+        </tr>
+      </thead>
+      <tbody>
+    {% if biosample_list %}
+      {% for biosamples in biosample_list %}
+      <tr class="table table-secondary">
+        <th>
+          <a href="{{ biosamples.get_absolute_url }}">{{ biosamples.name }}</a>
+        </th>
+      </tr>
+      {% endfor %}
+      {% if perms.sample.add_biosample %}
+      <tr class="table table-secondary">
+        <th>
+          <a href={% url "biosample-create" %}>Create biosample</a>
+        </th>
+      </tr>
+      {% endif %}
+    {% endif %}
+{% endblock %}

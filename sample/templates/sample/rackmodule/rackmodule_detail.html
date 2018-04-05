@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href={% url "freezer-detail" rackmodule.rack.compartment.freezer.id %}>{{ rackmodule.rack.compartment.freezer.name }}</a></li>
+  <li class="breadcrumb-item"><a href={% url "compartment-detail" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id %}>{{ rackmodule.rack.compartment.name }}</a></li>
+  <li class="breadcrumb-item"><a href={% url "rack-detail" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id %}>{{ rackmodule.rack.name }}</a></li>
+  <li class="breadcrumb-item">{{ rackmodule.name }}</li>
+</ol>
+
+<p><strong>Temperature:</strong> {{ rackmodule.rack.compartment.freezer.temperature }}°C</p>
+{% with num=rackmodule.box_set.count %}
+<p>Boxes: {{ num }} / {{ rackmodule.space }}</p>
+{% endwith %}
+
+<table class="table table-hover">
+  <tbody>
+      {% for box in rackmodule.box_set.all %}
+      <tr class="table-secondary">
+        <th scope="row"><a href="{{ box.get_absolute_rack_url }}">{{ box.name }}</a></th>
+      </tr>
+      {% endfor %}
+      {% if perms.sample.add_box %}
+      <tr class="table-secondary">
+        <th scope="row"><a href={% url "box-r-create" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %}>new box</a></th>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+  {% if perms.sample.change_rack %}
+    <a href={% url "rackmodule-update" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-primary">update</a>
+  {% endif %}
+  {% if perms.sample.delete_rack %}
+    <a href={% url "rackmodule-delete" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-primary">delete</a>
+  {% endif %}
+{% endblock %}
