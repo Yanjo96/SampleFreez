@@ -17,20 +17,23 @@
   <tbody>
       {% for box in rackmodule.box_set.all %}
       <tr class="table-secondary">
-        <th scope="row"><a href="{{ box.get_absolute_rack_url }}">{{ box.name }}</a></th>
+        <td><a href="{{ box.get_absolute_rack_url }}">{{ box.name }}</a></td>
+        <td style="text-align:center">{{ box.tube_set.count }}/{{ rackmodule.space }}</td>
       </tr>
       {% endfor %}
-      {% if perms.sample.add_box %}
-      <tr class="table-secondary">
-        <th scope="row"><a href={% url "box-r-create" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %}>new box</a></th>
-      </tr>
-      {% endif %}
     </tbody>
   </table>
+
+  {% if perms.sample.add_box %}
+    <a href={% url "box-r-create" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-success">new box</a>
+  {% endif %}
+
+<span style="float:right">
   {% if perms.sample.change_rack %}
-    <a href={% url "rackmodule-update" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-primary">update</a>
+    <a href={% url "rackmodule-update" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-primary">update</a>
   {% endif %}
   {% if perms.sample.delete_rack %}
-    <a href={% url "rackmodule-delete" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-primary">delete</a>
+    <a href={% url "rackmodule-delete" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-danger">delete</a>
   {% endif %}
+</span>
 {% endblock %}

@@ -49,10 +49,12 @@
 </table>
 
 <div>
-  <button type="submit" class="btn btn-primary">Login</button>
+  <button type="submit" class="btn btn-success">Login</button>
   <input type="hidden" name="next" value="{{ next }}" />
   {# Assumes you setup the password_reset view in your URLconf #}
-  <p align=right><a href="{% url 'password_reset' %}">Lost password?</a></p>
+  <span style="float:right">
+    <a href="{% url 'password_reset' %}">Lost password?</a>
+  </span>
 </div>
 </form>
 

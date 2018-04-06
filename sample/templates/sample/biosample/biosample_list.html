@@ -16,12 +16,11 @@
         </th>
       </tr>
       {% endfor %}
-      {% if perms.sample.add_biosample %}
-      <tr class="table table-secondary">
-        <th>
-          <a href={% url "biosample-create" %}>Create biosample</a>
-        </th>
-      </tr>
-      {% endif %}
     {% endif %}
+  </tbody>
+</table>
+
+{% if perms.sample.add_biosample %}
+  <a href={% url "biosample-create" %} class="btn btn-outline-success">Create biosample</a>
+{% endif %}
 {% endblock %}

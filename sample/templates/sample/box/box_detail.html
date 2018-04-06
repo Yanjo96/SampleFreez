@@ -22,40 +22,40 @@
     {% for tubes in box.tube_set.all %}
       <tr class="table-secondary">
       {% if tubes.box.rack %}
-        <th scope="row"><a href={% url "tube-r-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %}>{{ tubes.name }}</a></th>
-        <td>({{ tubes.biosample.name }})</td>
+        <td><a href={% url "tube-r-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %}>{{ tubes.name }}</a></td>
+        <td style="text-align:center">({{ tubes.biosample.name }})</td>
       {% else %}
-        <th scope="row"><a href={% url "tube-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>{{ tubes.name }}</a></th>
-        <td>({{ tubes.biosample.name }})</td>
+        <td><a href={% url "tube-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>{{ tubes.name }}</a></td>
+        <td style="text-align:center">({{ tubes.biosample.name }})</td>
       {% endif %}
       </tr>
     {% endfor %}
-    {% if perms.sample.add_tube %}
-      <tr class="table-secondary">
-      {% if box.rack %}
-        <th scope="row"><a href={% url "tube-r-create" box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id%}>new tube</a></th>
-        <td></td>
-      {% else %}
-        <th scope="row"><a href={% url "tube-c-create" box.freezer.id box.compartment.id box.id%}>new tube</a></th>
-        <td></td>
-      {% endif %}
-    </tr>
-    {% endif %}
   </tbody>
 </table>
 
+{% if perms.sample.add_tube %}
+  <tr class="table-secondary">
+  {% if box.rack %}
+    <a href={% url "tube-r-create" box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id%} class="btn btn-outline-success">new tube</a>
+  {% else %}
+    <a href={% url "tube-c-create" box.freezer.id box.compartment.id box.id%} class="btn btn-outline-success">new tube</a>
+  {% endif %}
+{% endif %}
+
+<span style="float:right">
 {% if perms.sample.change_rack %}
   {% if box.rack %}
-    <a href={% url "box-r-update" box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id %} class="btn btn-primary">update</a>
+    <a href={% url "box-r-update" box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id %} class="btn btn-outline-primary">update</a>
   {% else %}
-    <a href={% url "box-c-update" box.freezer.id box.compartment.id box.id %} class="btn btn-primary">update</a>
+    <a href={% url "box-c-update" box.freezer.id box.compartment.id box.id %} class="btn btn-outline-primary">update</a>
   {% endif %}
 {% endif %}
 {% if perms.sample.delete_rack %}
   {% if box.rack %}
-    <a href={% url "box-r-delete" box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id %} class="btn btn-primary">delete</a>
+    <a href={% url "box-r-delete" box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id %} class="btn btn-outline-danger">delete</a>
   {% else %}
-    <a href={% url "box-c-delete" box.freezer.id box.compartment.id box.id %} class="btn btn-primary">delete</a>
+    <a href={% url "box-c-delete" box.freezer.id box.compartment.id box.id %} class="btn btn-outline-danger">delete</a>
   {% endif %}
 {% endif %}
+</span>
 {% endblock %}

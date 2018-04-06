@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-  <p>Logged out!</p>
-  <a href={% url "login" %} class="btn btn-primary">login</a>
-  <a href="{% url 'login'%}">Click here to login again.</a>
+  <p>You successfully logged out!</p>
+  <p>You can log in again with following button</p>
+  <a href={% url "login" %} class="btn btn-success">login</a>
 {% endblock %}

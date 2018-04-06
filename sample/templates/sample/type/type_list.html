@@ -17,14 +17,12 @@
       </th>
     </tr>
       {% endfor %}
-      <tr class="table table-secondary">
-        <th>
-          {% if perms.sample.add_type %}
-            <a href={% url "type-create" %}>Create type</a>
-          {% endif %}
-        </th>
-      </tr>
     {% endif %}
   </tbody>
 </table>
+
+{% if perms.sample.add_type %}
+  <a href={% url "type-create" %} class="btn btn-outline-success">Create type</a>
+{% endif %}
+
 {% endblock %}

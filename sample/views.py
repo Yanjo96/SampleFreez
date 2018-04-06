@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.models import User
 from .forms import FreezerForm, CompartmentForm, RackForm, RackmoduleForm, BoxCompartmentForm, BoxRackForm, TubeForm, BioSampleForm, TypeForm
 import operator
 
@@ -436,4 +437,5 @@ class SearchListView(LoginRequiredMixin, AllListView):
             context['tube_list'] = Tube.objects.filter(reduce(operator.and_,(Q(name__icontains=q) for q in query_list)))
             context['biosample_list'] = BioSample.objects.filter(reduce(operator.and_,(Q(name__icontains=q) for q in query_list)))
             context['type_list'] = Type.objects.filter(reduce(operator.and_,(Q(name__icontains=q) for q in query_list)))
+            context['user_list'] = User.objects.filter(reduce(operator.and_,(Q(username__icontains=q) for q in query_list)))
         return context

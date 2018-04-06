@@ -165,6 +165,7 @@ class BioSample(models.Model):
 
 class Type(models.Model):
     name = models.CharField(max_length=50, help_text="Enter the type of the biosample (e.g. Blood)")
+    comment = models.TextField(blank=True,help_text="Enter a comment if you want")
 
     class Meta:
         ordering = ["name"]

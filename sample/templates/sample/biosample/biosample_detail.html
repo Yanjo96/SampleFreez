@@ -23,7 +23,7 @@
     <td>{{ biosample.contactPerson }}</td>
   </tr>
   {% if biosample.type.name == "Blood" %}
-  <tr class="table-secondary">
+  <tr class="table-default">
     <th colspan="2">Wie wird Blut entnommen?</th>
   </tr>
   <tr class="table-secondary">
@@ -34,7 +34,7 @@
     <th>Sober:</th>
     <td>{{ biosample.sober }}</td>
   </tr>
-  <tr class="table-secondary">
+  <tr class="table-default">
     <th colspan="2">Weitere Verarbeitungsschritte</th>
   </tr>
   <tr class="table-secondary">
@@ -50,7 +50,7 @@
     <td>{{ biosample.commentstep|linebreaks }}</td>
   </tr>
   {% if biosample.plasma or biosample.seroes %}
-  <tr class="table-secondary">
+  <tr class="table-default">
     <th colspan="2">Alliquotierung, Anzahl</th>
   </tr>
   {% if biosample.plasma %}
@@ -70,7 +70,7 @@
     <td>{{ biosample.commentaliquot|linebreaks }}</td>
   </tr>
   {% endif %}
-  <tr class="table-secondary">
+  <tr class="table-default">
     <th colspan="2">Frozen</th>
   </tr>
   <tr class="table-secondary">
@@ -111,34 +111,56 @@
             <a href = {% url "box-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id %}>{{ tubes.box.name }}</a> /
             <a href = {% url "tube-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>{{ tubes.name }}
           {% endif %}
-          {% if perms.sample.change_tube %}
-            {% if tubes.box.rack %}
-              <a href = {% url "tube-r-update" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %}>update</a>
-            {% else %}
-              <a href = {% url "tube-c-update" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>update</a>
-            {% endif %}
-          {% endif %}
-          {% if perms.sample.delete_tube %}
-            {% if tubes.box.rack %}
-              <a href = {% url "tube-r-delete" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %}>delete</a>
-            {% else %}
-              <a href = {% url "tube-c-delete" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>delete</a>
-            {% endif %}
-          {% endif %}
         </li>
         {% endfor %}
-        {% if perms.sample.add_tube %}
-          <li><a href={% url "tube-b-create" biosample.id %}>add tube</a></li>
-        {% endif %}
       </ul>
     </td>
   </tbody>
 </table>
 
+{% if perms.sample.add_tube %}
+  <a href={% url "tube-b-create" biosample.id %} class="btn btn-outline-success">add tube</a>
+{% endif %}
+
+<span style="float:right">
 {% if perms.sample.change_biosample %}
-  <a href={% url "biosample-update" biosample.id %} class="btn btn-primary">update</a>
+  <a href={% url "biosample-update" biosample.id %} class="btn btn-outline-primary">update</a>
 {% endif %}
 {% if perms.sample.delete_biosample %}
-  <a href={% url "biosample-delete" biosample.id %} class="btn btn-primary">delete</a>
+  <a href={% url "biosample-delete" biosample.id %} class="btn btn-outline-danger">delete</a>
 {% endif %}
+</span>
+<div id="dialog">
+  halloooo
+</div>
+<a href='#' onclick='javascript:openDialog()'>test</a>
 {% endblock %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#dialog").dialog({
+    modal: true,
+    autoOpen: false
+  });
+
+  $("a.delete").click(function(e) {
+    e.preventDefault();
+    var id = $(this).attr('id');
+    $("#dialog").dialog('option', 'buttons', {
+      "Delete": function() {
+        $.post({
+          url: {% url 'index' %},
+            data: {'id': id},
+            success: function() {
+            //   # whatever you like, some fancy effect that removes the object
+            }
+          });
+          $(this).dialog("close");
+        },
+        "Cancel": function() {
+        $(this).dialog("close");
+      }
+    });
+    $("#dialog").dialog("open");
+    return false;
+  });
+</script>

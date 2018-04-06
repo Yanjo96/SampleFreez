@@ -55,7 +55,11 @@
           </li>
         {% else %}
           <li class="nav-item">
-            <a class="btn btn-outline-success" href="{% url 'login' %}?next={{request.path}}">Login</a>
+            {% if request.path != "/accounts/logout/" %}
+              <a class="btn btn-outline-success" href="{% url 'login' %}?next={{request.path}}">Login</a>
+            {% else %}
+              <a class="btn btn-outline-success" href="{% url 'login' %}?next=/sample/">Login</a>
+            {% endif %}
           </li>
           <span style="display:block; width:10px;"></span>
           <li class="nav-item">

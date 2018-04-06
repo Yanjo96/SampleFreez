@@ -6,10 +6,16 @@
   <li class="breadcrumb-item">{{ type.name }}</li>
 </ol>
 <h2>{{ type.name }}</h2>
-{% if perms.sample.change_type %}
-  <a href={% url "type-update" type.id %} class="btn btn-secondary">update</a>
+{% if type.comment %}
+  {{ type.comment|linebreaks }}
 {% endif %}
-{% if perms.sample.delete_type %}
-  <a href={% url "type-delete" type.id %} class="btn btn-outline-danger">delete</a>
-{% endif %}
+
+<span style="float:right">
+  {% if perms.sample.change_type %}
+    <a href={% url "type-update" type.id %} class="btn btn-outline-primary">update</a>
+  {% endif %}
+  {% if perms.sample.delete_type %}
+    <a href={% url "type-delete" type.id %} class="btn btn-outline-danger">delete</a>
+  {% endif %}
+</span>
 {% endblock %}

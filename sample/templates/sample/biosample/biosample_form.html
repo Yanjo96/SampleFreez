@@ -47,11 +47,9 @@
   {% endfor %}
 </tbody>
 </table>
-<a href={% url 'popup' %} class="js-popup-link">bring up a popup</a>
-<div id="popup"></div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
-  <a href={% url 'biosample' %} class="btn btn-outline-secondary">Cancel</a>
+<button type="submit" class="btn btn-success">Save</button>
+<a href={% url 'biosample' %} class="btn btn-outline-secondary">Cancel</a>
 </form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -78,11 +76,5 @@
           break;
       }
     });
-
-  $(function(){
-    $('.js-popup-link').click(function(e){
-      e.preventDefault()
-      $('#popup').dialog({modal: true}).dialog('open').load(this.href)
-    })
-  })
+</script>
 {% endblock %}

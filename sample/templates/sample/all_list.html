@@ -180,7 +180,26 @@
     <tbody>
         {% for type in type_list %}
           <tr class="table-secondary">
-            <td><a href={% url 'type-detail' type.id %}> {{ type.name }}</td>
+            <td><a href={% url 'type-detail' type.id %}> {{ type.name }}</a></td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if user_list %}
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-secondary">
+        <th colspan="3"><h3>User</h3></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for user in user_list %}
+          <tr class="table-secondary">
+            <td>{{ user.username }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.first_name }}</td>
           </tr>
         {% endfor %}
     </tbody>

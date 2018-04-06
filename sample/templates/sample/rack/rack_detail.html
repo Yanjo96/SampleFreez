@@ -14,21 +14,23 @@
     <tbody>
       {% for rackmodules in rack.rackmodule_set.all %}
       <tr class="table-secondary">
-        <th scope="row"><a href="{{ rackmodules.get_absolute_url }}">{{ rackmodules.name }}</a></th>
+        <td><a href="{{ rackmodules.get_absolute_url }}">{{ rackmodules.name }}</a></td>
+        <td>{{ rackmodules.box_set.count }}/{{ rackmodules.space }}</td>
       </tr>
       {% endfor %}
-      {% if perms.sample.add_tube %}
-        <tr class="table-secondary">
-        <th><a href={% url "rackmodule-create" rack.compartment.freezer.id rack.compartment.id rack.id %}>new rackmodule</a></th>
-        </tr>
-      {% endif %}
     </tbody>
   </table>
 
+  {% if perms.sample.add_tube %}
+    <a href={% url "rackmodule-create" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-success">new rackmodule</a>
+  {% endif %}
+
+  <span style="float:right">
   {% if perms.sample.change_rack %}
-    <a href={% url "rack-update" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-primary">update</a>
+    <a href={% url "rack-update" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-primary">update</a>
   {% endif %}
   {% if perms.sample.delete_rack %}
-    <a href={% url "rack-delete" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-primary">delete</a>
+    <a href={% url "rack-delete" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-danger">delete</a>
   {% endif %}
+</span>
 {% endblock %}

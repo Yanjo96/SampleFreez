@@ -3,10 +3,14 @@
 {% block content %}
 
 <h2>Delete Type</h2>
+{% if perms.sample.delete_type %}
 <p>Are you sure you want to delete the type: {{ type }}?</p>
 
 <form action="" method="POST">
   {% csrf_token %}
-  <input type="submit" action="" value="Yes, delete." />
+  <button type="submit" action="" class="btn btn-danger">Yes, delete.</button>
 </form>
+{% else %}
+<p>You do not have the permissions to delete {{ type }}!</p>
+{% endif %}
 {% endblock %}

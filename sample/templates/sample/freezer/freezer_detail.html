@@ -13,21 +13,22 @@
   <tbody>
       {% for compartments in freezer.compartment_set.all %}
         <tr class="table-secondary">
-        <th scop="row"><a href="{{ compartments.get_absolute_url }}">{{ compartments.name }}</a></th>
+        <td><a href="{{ compartments.get_absolute_url }}">{{ compartments.name }}</a></td>
+        <td>{{ compartments.get_number_of_space }}/{{ compartments.space }}
         </tr>
       {% endfor %}
-      {% if perms.sample.add_compartment %}
-        <tr class="table-secondary">
-        <th scope="row"><a href={% url "compartment-create" freezer.id %}>create compartment</a></th>
-        </tr>
-      {% endif %}
   </tbody>
   </table>
 
+{% if perms.sample.add_compartment %}
+    <a href={% url "compartment-create" freezer.id %} class="btn btn-outline-success">create compartment</a></td>
+{% endif %}
+<span style="float:right">
   {% if perms.sample.change_freezer %}
-    <a href={% url "freezer-update" freezer.id %} class="btn btn-primary">update</a>
+    <a href={% url "freezer-update" freezer.id %} class="btn btn-outline-primary">update</a>
   {% endif %}
   {% if perms.sample.delete_freezer %}
-    <a href={% url "freezer-delete" freezer.id %} class="btn btn-primary">delete</a>
+    <a href={% url "freezer-delete" freezer.id %} class="btn btn-outline-danger">delete</a>
   {% endif %}
+</span>
 {% endblock %}

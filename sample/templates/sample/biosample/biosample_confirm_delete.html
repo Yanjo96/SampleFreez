@@ -3,12 +3,12 @@
 {% block content %}
 
 <h2>Delete Biosample</h2>
-{% if user.is_authenticated %}
+{% if perms.sample.delete_biosample %}
   <p>Are you sure you want to delete {{ biosample }}?</p>
 
   <form action="" method="POST">
     {% csrf_token %}
-    <button type="submit" action="" class="btn btn-primary">Yes, delete.</button>
+    <button type="submit" action="" class="btn btn-danger">Yes, delete.</button>
   </form>
 {% else %}
   <p>You do not have the permissions to delete {{ biosample }}!</p>

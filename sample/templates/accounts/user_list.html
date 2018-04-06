@@ -19,7 +19,7 @@
           <td>{{ user.first_name }}</td>
           <td>{{ user.last_name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.groups.name }}</td>
+          <td>{{ user.groups.values_list }}</td>
         </tr>
       {% endfor %}
     {% endif %}
