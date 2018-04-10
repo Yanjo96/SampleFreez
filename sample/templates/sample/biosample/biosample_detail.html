@@ -130,37 +130,4 @@
   <a href={% url "biosample-delete" biosample.id %} class="btn btn-outline-danger">delete</a>
 {% endif %}
 </span>
-<div id="dialog">
-  halloooo
-</div>
-<a href='#' onclick='javascript:openDialog()'>test</a>
 {% endblock %}
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-  $("#dialog").dialog({
-    modal: true,
-    autoOpen: false
-  });
-
-  $("a.delete").click(function(e) {
-    e.preventDefault();
-    var id = $(this).attr('id');
-    $("#dialog").dialog('option', 'buttons', {
-      "Delete": function() {
-        $.post({
-          url: {% url 'index' %},
-            data: {'id': id},
-            success: function() {
-            //   # whatever you like, some fancy effect that removes the object
-            }
-          });
-          $(this).dialog("close");
-        },
-        "Cancel": function() {
-        $(this).dialog("close");
-      }
-    });
-    $("#dialog").dialog("open");
-    return false;
-  });
-</script>

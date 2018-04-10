@@ -7,7 +7,7 @@
 {% block content %}
 {% load widget_tweaks %}
 <section>
-<form method="post" id="biosampleForm" novalidate>
+<form method="post" id="biosampleForm" action="{% url 'biosample-create' %}" novalidate>
   {% csrf_token %}
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
@@ -48,15 +48,14 @@
     </td>
     <td style="text-align:center" width="20px">
       {% if field.label == "Type" %}
-        <a class="contact" href="#" data-form="{% url 'type-create' %}" title="type create"><i class="fas fa-plus-square fa-2x"></i></a>
+        <a class="contact" href="#" data-form="{% url 'type-create' %}" title="add type"><i class="fas fa-plus-square fa-2x"></i></a>
       {% endif %}
     </td>
     </tr>
     {% endfor %}
   </tbody>
   </table>
-  <div class="modal hide" id="contactModal" aria-hidden="false"><!-- Modal -->
-    {% include "sample/type/type_form.html" %}
+  <div class="modal hide" id="contactModal" aria-hidden="true"><!-- Modal -->
   </div><!-- /.modal -->
 
   <button type="submit" class="btn btn-success">Save</button>
