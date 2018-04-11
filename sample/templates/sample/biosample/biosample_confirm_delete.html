@@ -25,6 +25,7 @@
 {% load widget_tweaks %}
 
 <form method='post' action="{% url 'biosample-delete' biosample.id %}" novalidate>
+  {% csrf_token %}
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -35,8 +36,6 @@
         <h2>Delete Biosample</h2>
         {% if perms.sample.delete_biosample %}
             <p>Are you sure you want to delete {{ biosample }}?</p>
-            {% csrf_token %}
-            <button type="submit" action="" class="btn btn-danger">Yes, delete.</button>
         {% else %}
           <p>You do not have the permissions to delete {{ biosample }}!</p>
         {% endif %}

@@ -19,11 +19,12 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
   <script defer src="/static/js/fontawesome-all.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
   <!-- <link rel="stylesheet" href="{% static 'css/' %}"> -->
 </head>
 <div class="conatiner">
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href={% url "index" %}>SampleFreez</a>
+    <a class="navbar-brand" href={% url "index" %}><i class="fas fa-snowflake"></i><i class="fas fa-vial"></i> SampleFreez</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -68,8 +69,8 @@
           </li>
         {% endif %}
       </ul>
-      <form id="searchform" action="{% url 'search_list_view' %}" method="get" accept-charset="utf-8">>
-        <input class="searchfield" id="searchbox" name="q" type="text" placeholder="Search">
+      <form id="searchform" action="{% url 'search_list_view' %}" method="get" accept-charset="utf-8">
+        <input class="form-control mr-sm-2" id="searchbox" name="q" type="text" placeholder="Search">
       </form>
     </div>
   </nav>

@@ -385,21 +385,13 @@ class TypeCreate(PermissionRequiredMixin, CreateView):
     model = Type
     template_name = 'sample/type/type_form.html'
     form_class = TypeForm
+    success_url = reverse_lazy('biosample')
 
 class TypeUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_type'
     template_name = 'sample/type/type_form.html'
     model = Type
     form_class = TypeForm
-
-    def dispatch(self, *args, **kwargs):
-        self.type_id = kwargs['pk']
-        return super(TypeUpdate, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        form.save()
-        type = Type.objects.get(id=self.type_id)
-        return HttpResponse(render_to_string('sample/type/type_edit_form_success.html', {'type': type}))
 
 class TypeDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'sample.delete_type'
