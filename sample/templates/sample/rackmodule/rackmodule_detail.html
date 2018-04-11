@@ -29,11 +29,38 @@
   {% endif %}
 
 <span style="float:right">
-  {% if perms.sample.change_rack %}
-    <a href={% url "rackmodule-update" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-primary">update</a>
+  {% if perms.sample.change_rackmodule %}
+    <a href={% url "rackmodule-update" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
   {% endif %}
-  {% if perms.sample.delete_rack %}
-    <a href={% url "rackmodule-delete" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-danger">delete</a>
+  {% if perms.sample.delete_rackmodule %}
+      <a class="contact btn btn-outline-danger" href="#" data-form={% url "rackmodule-delete" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} title="delete"><i class="fas fa-trash-alt"></i> delete</a>
   {% endif %}
 </span>
+
+<div class="modal fade" id="deleteRackmodule" aria-hidden="true"><!-- Modal -->
+</div><!-- /.modal -->
+
+<script>
+    $('.contact').click(function(ev) { // for each edit contact url
+        ev.preventDefault(); // prevent navigation
+        var url = $(this).data("form"); // get the contact form url
+        $("#deleteRackmodule").load(url, function() { // load the url into the modal
+            $(this).modal('show'); // display the modal on url load
+        });
+        return false; // prevent the click propagation
+    });
+
+    $('.contact-form').live('submit', function() {
+        $.ajax({
+            type: $(this).attr('method'),
+            url: this.action,
+            data: $(this).serialize(),
+            context: this,
+            success: function(data, status) {
+                $('#deleteRackmodule').html(data);
+            }
+        });
+        return false;
+    });
+</script>
 {% endblock %}

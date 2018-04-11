@@ -5,10 +5,15 @@
   <li class="breadcrumb-item">{{ freezer.name }}</li>
 </ol>
 
-  <p><strong>Temperature:</strong> {{ freezer.temperature }}°C</p>
-  {% with num=freezer.compartment_set.count %}
-  <p>Compartments: {{ num }} / {{ freezer.space }}</p>
-  {% endwith %}
+  <p>
+    <strong>Temperature:</strong> {{ freezer.temperature }}°C<br>
+    Compartments: {{ freezer.compartment_set.count }} / {{ freezer.space }}
+    <span style="float:right">
+      {% if perms.sample.change_freezer %}
+        <a href={% url "freezer-update" freezer.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
+      {% endif %}
+    </span>
+  </p>
   <table class="table table-hover">
   <tbody>
       {% for compartments in freezer.compartment_set.all %}
@@ -24,11 +29,34 @@
     <a href={% url "compartment-create" freezer.id %} class="btn btn-outline-success">create compartment</a></td>
 {% endif %}
 <span style="float:right">
-  {% if perms.sample.change_freezer %}
-    <a href={% url "freezer-update" freezer.id %} class="btn btn-outline-primary">update</a>
-  {% endif %}
   {% if perms.sample.delete_freezer %}
-    <a href={% url "freezer-delete" freezer.id %} class="btn btn-outline-danger">delete</a>
+    <a class="contact btn btn-outline-danger" href="#" data-form={% url "freezer-delete" freezer.id %} title="delete"><i class="fas fa-trash-alt"></i> delete</a>
   {% endif %}
 </span>
+
+<div class="modal fade" id="deleteFreezer" aria-hidden="true"><!-- Modal -->
+</div><!-- /.modal -->
+<script>
+    $('.contact').click(function(ev) { // for each edit contact url
+        ev.preventDefault(); // prevent navigation
+        var url = $(this).data("form"); // get the contact form url
+        $("#deleteFreezer").load(url, function() { // load the url into the modal
+            $(this).modal('show'); // display the modal on url load
+        });
+        return false; // prevent the click propagation
+    });
+
+    $('.contact-form').live('submit', function() {
+        $.ajax({
+            type: $(this).attr('method'),
+            url: this.action,
+            data: $(this).serialize(),
+            context: this,
+            success: function(data, status) {
+                $('#deleteFreezer').html(data);
+            }
+        });
+        return false;
+    });
+</script>
 {% endblock %}

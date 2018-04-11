@@ -6,10 +6,13 @@
   <li class="breadcrumb-item"><a href={% url "compartment-detail" rack.compartment.freezer.id rack.compartment.id %}>{{ rack.compartment.name }}</a></li>
   <li class="breadcrumb-item">{{ rack.name }}</li>
 </ol>
-<p><strong>Temperature:</strong> {{ rack.compartment.freezer.temperature }}°C</p>
-{% with num=rack.rackmodule_set.count %}
-<p>Rackmodules: {{ num }} / {{ rack.space }}</p>
-{% endwith %}
+<strong>Temperature:</strong> {{ rack.compartment.freezer.temperature }}°C<br>
+Rackmodules: {{ rack.rackmodule_set.count }} / {{ rack.space }}
+<span style="float:right">
+  {% if perms.sample.change_rack %}
+    <a href={% url "rack-update" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
+  {% endif %}
+</span>
     <table class="table table-hover">
     <tbody>
       {% for rackmodules in rack.rackmodule_set.all %}
@@ -26,11 +29,35 @@
   {% endif %}
 
   <span style="float:right">
-  {% if perms.sample.change_rack %}
-    <a href={% url "rack-update" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-primary">update</a>
-  {% endif %}
   {% if perms.sample.delete_rack %}
-    <a href={% url "rack-delete" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-danger">delete</a>
+    <a class="contact btn btn-outline-danger" href="#" data-form={% url "rack-delete" rack.compartment.freezer.id rack.compartment.id rack.id %} title="delete"><i class="fas fa-trash-alt"></i> delete</a>
   {% endif %}
 </span>
+
+<div class="modal fade" id="deleteRack" aria-hidden="true"><!-- Modal -->
+</div><!-- /.modal -->
+
+<script>
+    $('.contact').click(function(ev) { // for each edit contact url
+        ev.preventDefault(); // prevent navigation
+        var url = $(this).data("form"); // get the contact form url
+        $("#deleteRack").load(url, function() { // load the url into the modal
+            $(this).modal('show'); // display the modal on url load
+        });
+        return false; // prevent the click propagation
+    });
+
+    $('.contact-form').live('submit', function() {
+        $.ajax({
+            type: $(this).attr('method'),
+            url: this.action,
+            data: $(this).serialize(),
+            context: this,
+            success: function(data, status) {
+                $('#deleteRack').html(data);
+            }
+        });
+        return false;
+    });
+</script>
 {% endblock %}

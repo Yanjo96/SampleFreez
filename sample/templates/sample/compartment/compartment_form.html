@@ -4,6 +4,11 @@
 {% load widget_tweaks %}
 
   <form method="post" id="compartmnetForm" novalidate>
+  {% if compartment.id %}
+    <h3>Edit {{ compartment.name }}</h3>
+  {% else %}
+    <h3>Add Compartment</h3>
+  {% endif %}
   {% csrf_token %}
 
   {% for hidden_field in form.hidden_fields %}

@@ -4,6 +4,11 @@
 {% load widget_tweaks %}
 
 <form method="post" id="rackForm" novalidate>
+  {% if rack.id %}
+    <h3>Edit {{ rack.name }}</h3>
+  {% else %}
+    <h3>Add Rack</h3>
+  {% endif %}
   {% csrf_token %}
 
   {% for hidden_field in form.hidden_fields %}

@@ -5,6 +5,11 @@
 {% load widget_tweaks %}
 <section>
 <form method="post" id="biosampleForm" action="{% url 'biosample-create' %}" novalidate>
+  {% if biosample.id %}
+    <h3>Edit {{ biosample.name }}</h3>
+  {% else %}
+    <h3> Add Biosample</h3>
+  {% endif %}
   {% csrf_token %}
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
