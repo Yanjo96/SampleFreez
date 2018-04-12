@@ -8,27 +8,27 @@
 </ol>
 <strong>Temperature:</strong> {{ rack.compartment.freezer.temperature }}°C<br>
 Rackmodules: {{ rack.rackmodule_set.count }} / {{ rack.space }}
-<span style="float:right">
-  {% if perms.sample.change_rack %}
-    <a href={% url "rack-update" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
-  {% endif %}
-</span>
     <table class="table table-hover">
     <tbody>
       {% for rackmodules in rack.rackmodule_set.all %}
       <tr class="table-secondary">
         <td><a href="{{ rackmodules.get_absolute_url }}">{{ rackmodules.name }}</a></td>
-        <td>{{ rackmodules.box_set.count }}/{{ rackmodules.space }}</td>
+        <td style)"text-align:center; width:500px">{{ rackmodules.box_set.count }}/{{ rackmodules.space }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
+{% if rack.rackmodule_set.count < rack.space %}
   {% if perms.sample.add_tube %}
-    <a href={% url "rackmodule-create" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-success">new rackmodule</a>
+    <a href={% url "rackmodule-create" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> rackmodule</a>
   {% endif %}
+{% endif %}
 
   <span style="float:right">
+  {% if perms.sample.change_rack %}
+    <a href={% url "rack-update" rack.compartment.freezer.id rack.compartment.id rack.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
+  {% endif %}
   {% if perms.sample.delete_rack %}
     <a class="contact btn btn-outline-danger" href="#" data-form={% url "rack-delete" rack.compartment.freezer.id rack.compartment.id rack.id %} title="delete"><i class="fas fa-trash-alt"></i> delete</a>
   {% endif %}

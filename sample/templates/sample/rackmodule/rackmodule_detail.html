@@ -9,24 +9,24 @@
 </ol>
 
 <p><strong>Temperature:</strong> {{ rackmodule.rack.compartment.freezer.temperature }}°C</p>
-{% with num=rackmodule.box_set.count %}
-<p>Boxes: {{ num }} / {{ rackmodule.space }}</p>
-{% endwith %}
+<p>Boxes: {{ rackmodule.box_set.count }} / {{ rackmodule.space }}</p>
 
 <table class="table table-hover">
   <tbody>
       {% for box in rackmodule.box_set.all %}
       <tr class="table-secondary">
         <td><a href="{{ box.get_absolute_rack_url }}">{{ box.name }}</a></td>
-        <td style="text-align:center">{{ box.tube_set.count }}/{{ rackmodule.space }}</td>
+        <td style="text-align:center; width:500px">{{ box.tube_set.count }}/{{ rackmodule.space }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
+{% if rackmodule.box_set.count < rackmodule.space %}
   {% if perms.sample.add_box %}
-    <a href={% url "box-r-create" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-success">new box</a>
+    <a href={% url "box-r-create" rackmodule.rack.compartment.freezer.id rackmodule.rack.compartment.id rackmodule.rack.id rackmodule.id %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> box</a>
   {% endif %}
+{% endif %}
 
 <span style="float:right">
   {% if perms.sample.change_rackmodule %}

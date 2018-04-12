@@ -7,13 +7,7 @@
   <li class="breadcrumb-item">{{ biosample.name }}</li>
 </ol>
 
-<h2>{{ biosample.name }}
-<spin style="float:right">
-{% if perms.sample.change_biosample %}
-  <a class="btn btn-outline-secondary" href={% url "biosample-update" biosample.id %}><i class="fas fa-pencil-alt"></i> Edit</a>
-{% endif %}
-</spin>
-</h2>
+<h2>{{ biosample.name }}</h2>
 <table class="table table-hover">
 <tbody>
   <tr class="table-secondary">
@@ -129,9 +123,12 @@
 {% endif %}
 
 <span style="float:right">
-{% if perms.sample.delete_biosample %}
-  <a class="contact btn btn-outline-danger" href="#" data-form="{% url 'biosample-delete' biosample.id %}" title="delete"><i class="fas fa-trash-alt"></i> delete</a>
-{% endif %}
+  {% if perms.sample.change_biosample %}
+    <a class="btn btn-outline-primary" href={% url "biosample-update" biosample.id %}><i class="fas fa-pencil-alt"></i> Edit</a>
+  {% endif %}
+  {% if perms.sample.delete_biosample %}
+    <a class="contact btn btn-outline-danger" href="#" data-form="{% url 'biosample-delete' biosample.id %}" title="delete"><i class="fas fa-trash-alt"></i> delete</a>
+  {% endif %}
 </span>
 
 <div class="modal fade" id="deleteBiosample" aria-hidden="true"><!-- Modal -->

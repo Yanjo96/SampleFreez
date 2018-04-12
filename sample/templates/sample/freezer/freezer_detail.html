@@ -8,27 +8,28 @@
   <p>
     <strong>Temperature:</strong> {{ freezer.temperature }}°C<br>
     Compartments: {{ freezer.compartment_set.count }} / {{ freezer.space }}
-    <span style="float:right">
-      {% if perms.sample.change_freezer %}
-        <a href={% url "freezer-update" freezer.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
-      {% endif %}
-    </span>
   </p>
   <table class="table table-hover">
   <tbody>
       {% for compartments in freezer.compartment_set.all %}
         <tr class="table-secondary">
         <td><a href="{{ compartments.get_absolute_url }}">{{ compartments.name }}</a></td>
-        <td>{{ compartments.get_number_of_space }}/{{ compartments.space }}
+        <td style="text-align:center; width:500px">{{ compartments.get_number_of_space }}/{{ compartments.space }}
         </tr>
       {% endfor %}
   </tbody>
   </table>
 
-{% if perms.sample.add_compartment %}
-    <a href={% url "compartment-create" freezer.id %} class="btn btn-outline-success">create compartment</a></td>
+{% if  freezer.compartment_set.count < freezer.space %}
+  {% if perms.sample.add_compartment %}
+    <a href={% url "compartment-create" freezer.id %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> compartment</a></td>
+  {% endif %}
 {% endif %}
+
 <span style="float:right">
+  {% if perms.sample.change_freezer %}
+    <a href={% url "freezer-update" freezer.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
+  {% endif %}
   {% if perms.sample.delete_freezer %}
     <a class="contact btn btn-outline-danger" href="#" data-form={% url "freezer-delete" freezer.id %} title="delete"><i class="fas fa-trash-alt"></i> delete</a>
   {% endif %}

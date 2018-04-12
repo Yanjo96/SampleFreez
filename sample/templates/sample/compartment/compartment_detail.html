@@ -8,11 +8,6 @@
 
   <strong>Temperature:</strong> {{ compartment.freezer.temperature }}°C<br>
   Space: {{ compartment.get_number_of_space }} / {{ compartment.space }}
-  <span style="float:right">
-    {% if perms.sample.change_compartment %}
-      <a href={% url "compartment-update" compartment.freezer.id compartment.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
-    {% endif %}
-  </span>
     <table class="table table-hover">
       <thead>
         <tr class="table-active">
@@ -23,14 +18,16 @@
       {% for racks in compartment.rack_set.all %}
       <tr class="table-secondary">
         <td><a href="{{ racks.get_absolute_url }}">{{ racks.name }}</a></td>
-        <td>{{ racks.rackmodule_set.count }}/{{ racks.space }}
+        <td style="text-align:center; width:500px">{{ racks.rackmodule_set.count }}/{{ racks.space }}
       </tr>
       {% endfor %}
     </tbody>
     </table>
 
-    {% if perms.sample.add_rack %}
-      <a href={% url "rack-create" compartment.freezer.id compartment.id %} class="btn btn-outline-success">create rack</a>
+    {% if compartment.get_number_of_space < compartment.space %}
+      {% if perms.sample.add_rack %}
+        <a href={% url "rack-create" compartment.freezer.id compartment.id %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> rack</a>
+      {% endif %}
     {% endif %}
     <p></p>
     <table class="table table-hover">
@@ -44,18 +41,23 @@
         {% if not box.rack %}
           <tr class="table-secondary">
             <td><a href="{{ box.get_absolute_url }}">{{ box.name }}</a></td>
-            <td>{{ box.tube_set.count }}/{{ box.space }}</td>
+            <td style="text-align:center; width:500px">{{ box.tube_set.count }}/{{ box.space }}</td>
           </tr>
         {% endif %}
       {% endfor %}
     </tbody>
     </table>
 
-{% if perms.sample.add_box %}
-<a href={% url "box-c-create" compartment.freezer.id compartment.id %} class="btn btn-outline-success">create box</a>
-{% endif %}
+    {% if compartment.get_number_of_space < compartment.space %}
+      {% if perms.sample.add_box %}
+        <a href={% url "box-c-create" compartment.freezer.id compartment.id %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> box</a>
+      {% endif %}
+    {% endif %}
 
 <span style="float:right">
+  {% if perms.sample.change_compartment %}
+    <a href={% url "compartment-update" compartment.freezer.id compartment.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
+  {% endif %}
   {% if perms.sample.delete_compartment %}
     <a class="contact btn btn-outline-danger" href="#" data-form={% url "compartment-delete" compartment.freezer.id compartment.id %} title="delete"><i class="fas fa-trash-alt"></i> delete</a>
   {% endif %}
