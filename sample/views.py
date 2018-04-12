@@ -102,7 +102,7 @@ class CompartmentUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_compartment'
     template_name = 'sample/compartment/compartment_form.html'
     model = Compartment
-    form_class = CompartmentForm
+    fields = '__all__'
 
 class CompartmentDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'sample.delete_compartment'
@@ -133,7 +133,7 @@ class RackUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_rack'
     template_name = 'sample/rack/rack_form.html'
     model = Rack
-    form_class = RackForm
+    fields = '__all__'
 
 class RackDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'sample.delete_rack'
@@ -165,7 +165,7 @@ class RackmoduleUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_rackmodule'
     template_name = 'sample/rackmodule/rackmodule_form.html'
     model = Rackmodule
-    form_class = RackmoduleForm
+    fields = '__all__'
 
 class RackmoduleDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'sample.delete_rackmodule'
@@ -201,7 +201,7 @@ class BoxRackUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_box'
     template_name = 'sample/box/box_form.html'
     model = Box
-    form_class = BoxRackForm
+    fields = '__all__'
 
     def get_success_url(self):
         return reverse('box-r-detail', args=[self.kwargs['freezer'],self.kwargs['compartment'],self.kwargs['rack'],self.kwargs['rackmodule'],self.kwargs['pk']])
@@ -237,7 +237,7 @@ class BoxCompartmentUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_box'
     template_name = 'sample/box/box_form.html'
     model = Box
-    form_class = BoxCompartmentForm
+    fields = '__all__'
 
     def get_success_url(self):
         return reverse('box-c-detail', args=[self.kwargs['freezer'],self.kwargs['compartment'],self.kwargs['pk']])
@@ -279,7 +279,7 @@ class TubeRackUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_tube'
     template_name = 'sample/tube/tube_form.html'
     model = Tube
-    form_class = TubeForm
+    fields = '__all__'
 
     def get_success_url(self):
         return reverse('tube-r-detail', args=[self.kwargs['freezer'],self.kwargs['compartment'],self.kwargs['rack'],self.kwargs['rackmodule'],self.kwargs['box'],self.kwargs['pk']])
@@ -316,7 +316,7 @@ class TubeCompartmentUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_tube'
     template_name = 'sample/tube/tube_form.html'
     model = Tube
-    form_class = TubeForm
+    fields = '__all__'
 
     def get_success_url(self):
         return reverse('tube-c-detail', args=[self.kwargs['freezer'],self.kwargs['compartment'],self.kwargs['box'],self.kwargs['pk']])

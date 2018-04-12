@@ -27,12 +27,20 @@ class CompartmentForm(forms.ModelForm):
         freezer_id = self.data.get('freezer')
         full = int(Compartment.objects.filter(freezer_id=freezer_id).count())
         #Check freezzer isnt full.
-        if int(data.space) < full+1:
+        if int(data.space) <= full:
+            print(self.get_form_kwargs)
             msg = self.error_messages['freezer_full']
             self.add_error(NON_FIELD_ERRORS, msg)
 
         # Remember to always return the cleaned data.
         return data
+
+class CompartmentUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Compartment
+        fields = '__all__'
+
 
 # The rack form
 class RackForm(forms.ModelForm):
