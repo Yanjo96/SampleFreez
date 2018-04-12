@@ -5,6 +5,11 @@ from multiselectfield import MultiSelectField
 import uuid
 from datetime import date
 
+class Document(models.Model):
+    description = models.CharField(max_length=255, blank=True)
+    document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
 class Freezer(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the freezer (e.g. Freezer 1)")
     temperature = models.IntegerField(help_text="Enter the temperature of the freezer (e.g. -80)")

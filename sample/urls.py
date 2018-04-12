@@ -64,8 +64,8 @@ urlpatterns = [
     path('ajax/load-compartments/', views.load_compartments, name='ajax_load_compartments'),
     path('ajax/load-racks/', views.load_racks, name='ajax_load_racks'),
     path('ajax/load-rackmodules/', views.load_rackmodules, name='ajax_load_rackmodules'),
-    # POPUP
-    url(r'^popup/$', views.popup, name="popup"),
+    # Upload
+    url(r'^uploads/$', views.model_form_upload, name='upload'),
     # re_path(r'^search/$', views.FreezerSearchListView.as_view(), name="freezer_search_list_view"),
     re_path(r'^search/$', views.SearchListView.as_view(), name="search_list_view"),
 

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<ol class="breadcrumb">
+<ol class="breadcrumb my-4">
   <li class="breadcrumb-item"><a href={% url "biosample" %}>Biosample</a></li>
   <li class="breadcrumb-item">{{ biosample.name }}</li>
 </ol>
@@ -24,7 +24,7 @@
   </tr>
   {% if biosample.type.name == "Blood" %}
   <tr class="table-default">
-    <th colspan="2">Wie wird Blut entnommen?</th>
+    <th colspan="2">How whas the blood taken?</th>
   </tr>
   <tr class="table-secondary">
     <th>State:</th>
@@ -35,14 +35,14 @@
     <td>{{ biosample.sober }}</td>
   </tr>
   <tr class="table-default">
-    <th colspan="2">Weitere Verarbeitungsschritte</th>
+    <th colspan="2">Further processing steps</th>
   </tr>
   <tr class="table-secondary">
-    <th>Zentrifugation:</th>
+    <th>Centrifugation:</th>
     <td>{% if biosample.centrifugate %} Yes{% else %} No{% endif %}</td>
   </tr>
   <tr class="table-secondary">
-    <th>Pipettierung:</th>
+    <th>Pipetting:</th>
     <td>{% if biosample.pipet %} Yes{% else %} No{% endif %}</td>
   </tr>
   <tr class="table-secondary">
@@ -51,7 +51,7 @@
   </tr>
   {% if biosample.plasma or biosample.seroes %}
   <tr class="table-default">
-    <th colspan="2">Alliquotierung, Anzahl</th>
+    <th colspan="2">Aliquoting, Number</th>
   </tr>
   {% if biosample.plasma %}
   <tr class="table-secondary">
@@ -90,7 +90,7 @@
     {% endif %}
   </tr>
   <tr class="table-secondary">
-    <th>Transfer der Blutproben</th>
+    <th>Transfer of the blood</th>
     <td>{{ biosample.transfer|linebreaks }}</td>
   </tr>
   {% endif %}
@@ -119,7 +119,7 @@
 </table>
 
 {% if perms.sample.add_tube %}
-  <a href={% url "tube-b-create" biosample.id %} class="btn btn-outline-success">add tube</a>
+  <a href={% url "tube-b-create" biosample.id %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> tube</a>
 {% endif %}
 
 <span style="float:right">

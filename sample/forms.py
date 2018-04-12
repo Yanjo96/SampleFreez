@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tube, Freezer, Compartment, Rack, Rackmodule, Box, Tube, BioSample, Type
+from .models import Tube, Freezer, Compartment, Rack, Rackmodule, Box, Tube, BioSample, Type, Document
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -221,3 +221,9 @@ class TypeForm(forms.ModelForm):
     class Meta:
         model = Type
         fields = '__all__'
+
+# To upload files
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ('description', 'document', )

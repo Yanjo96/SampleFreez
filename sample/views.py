@@ -7,7 +7,8 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
-from .forms import FreezerForm, CompartmentForm, RackForm, RackmoduleForm, BoxCompartmentForm, BoxRackForm, TubeForm, BioSampleForm, TypeForm
+from .forms import FreezerForm, CompartmentForm, RackForm, RackmoduleForm, BoxCompartmentForm, BoxRackForm, TubeForm, BioSampleForm, TypeForm, DocumentForm
+from django.shortcuts import redirect
 import operator
 
 from django.db.models import Q
@@ -25,6 +26,18 @@ def index(request):
         'index.html',
         context={'num_freezer':num_freezer,'num_biosample':num_biosample,}
     )
+
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = DocumentForm()
+    return render(request, 'sample/model_form_upload.html', {
+        'form': form
+    })
 
 # Um nur ein Compartment auzuwählen das auch im dazugehörigen Freezer liegt und nicht
 # eins random genommen werden kann
