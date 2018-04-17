@@ -51,6 +51,7 @@
     {% if compartment.get_number_of_space < compartment.space %}
       {% if perms.sample.add_box %}
         <a href={% url "box-c-create" compartment.freezer.id compartment.id %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> box</a>
+        <a href={% url "upload-compartment" compartment.freezer.id compartment.id %} class="btn btn-outline-success"><i class="fas fa-upload"></i> box</a>
       {% endif %}
     {% endif %}
 

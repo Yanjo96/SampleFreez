@@ -104,7 +104,7 @@ class Tube(models.Model):
     comment = models.TextField(max_length=1000,help_text="Enter a comment if you want",blank=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["yvalue","xvalue"]
 
     def get_absolute_rack_url(self):
         # Returns the URL to access a particular tube

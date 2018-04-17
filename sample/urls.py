@@ -65,7 +65,8 @@ urlpatterns = [
     path('ajax/load-racks/', views.load_racks, name='ajax_load_racks'),
     path('ajax/load-rackmodules/', views.load_rackmodules, name='ajax_load_rackmodules'),
     # Upload
-    re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>\d+)/uploads/$', views.model_form_upload, name='upload'),
+    re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>\d+)/uploads/$', views.model_form_upload_rack, name='upload-rack'),
+    re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/uploads/$', views.model_form_upload_compartment, name='upload-compartment'),
     #url(r'^upload/$', views.model_form_upload, name='upload'),
     # re_path(r'^search/$', views.FreezerSearchListView.as_view(), name="freezer_search_list_view"),
     re_path(r'^search/$', views.SearchListView.as_view(), name="search_list_view"),

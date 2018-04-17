@@ -21,15 +21,26 @@
       <tr class="table-secondary">
       {% if tubes.box.rack %}
         <td><a href={% url "tube-r-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %}>{{ tubes.name }}</a></td>
-        <td style="text-align:center">({{ tubes.biosample.name }})</td>
+        <td style="text-align:center">{{ tubes.xvalue }}</td>
+        <td style="text-align:center">{{ tubes.yvalue }}</td>
       {% else %}
         <td><a href={% url "tube-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %}>{{ tubes.name }}</a></td>
-        <td style="text-align:center">({{ tubes.biosample.name }})</td>
+        <td style="text-align:center">{{ tubes.xvalue }}</td>
+        <td style="text-align:center">{{ tubes.yvalue }}</td>
       {% endif %}
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
+{% for tubes in box.tube_set.all %}
+  {% if tubes.box.rack %}
+    <td><a href={% url "tube-r-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.rack.id tubes.box.rackmodule.id tubes.box.id tubes.id %} class="btn btn-primary">{{ tubes.name }}</a></td>
+  {% else %}
+    <td><a href={% url "tube-c-detail" tubes.box.freezer.id tubes.box.compartment.id tubes.box.id tubes.id %} class="btn btn-primary">{{ tubes.name }}</a></td>
+  {% endif %}
+  <br>
+{% endfor %}
 
 {% if box.tube_set.count < box.space %}
 {% if perms.sample.add_tube %}
