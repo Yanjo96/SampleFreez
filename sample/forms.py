@@ -176,7 +176,7 @@ class BoxCompartmentForm(forms.ModelForm):
                 freezer_id = int(self.data.get('freezer'))
                 self.fields['compartment'].queryset = Compartment.objects.filter(freezer_id=freezer_id).order_by('name')
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
+                pass
         elif self.instance.pk:
             self.fields['compartment'].queryset = self.instance.freezer.compartment_set.order_by('name')
 

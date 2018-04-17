@@ -27,12 +27,13 @@ def index(request):
         context={'num_freezer':num_freezer,'num_biosample':num_biosample,}
     )
 
-def model_form_upload(request):
+def model_form_upload(request, freezer, compartment, rack, rackmodule):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('rackmodule-detail', freezer=freezer, compartment=compartment, rack=rack, pk=rackmodule)
+            #return redirect('index')
     else:
         form = DocumentForm()
     return render(request, 'sample/model_form_upload.html', {
@@ -60,7 +61,6 @@ def load_rackmodules(request):
     rack_id = request.GET.get('rack')
     rackmodules = Rackmodule.objects.filter(rack_id=rack_id).order_by('name')
     return render(request, 'sample/rackmodule/rackmodule_dropdown_list_options.html', {'rackmodules': rackmodules})
-
 
 """
 Freezer view

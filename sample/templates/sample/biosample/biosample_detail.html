@@ -124,7 +124,7 @@
 
 <span style="float:right">
   {% if perms.sample.change_biosample %}
-    <a class="btn btn-outline-primary" href={% url "biosample-update" biosample.id %}><i class="fas fa-pencil-alt"></i> Edit</a>
+    <a class="btn btn-outline-primary" href={% url "biosample-update" biosample.id %}><i class="fas fa-pencil-alt"></i> edit</a>
   {% endif %}
   {% if perms.sample.delete_biosample %}
     <a class="contact btn btn-outline-danger" href="#" data-form="{% url 'biosample-delete' biosample.id %}" title="delete"><i class="fas fa-trash-alt"></i> delete</a>

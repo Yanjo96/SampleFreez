@@ -12,10 +12,10 @@
 
 <span style="float:right">
   {% if perms.sample.change_type %}
-    <a href={% url "type-update" type.id %} class="btn btn-outline-primary">update</a>
+    <a href={% url "type-update" type.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>
   {% endif %}
   {% if perms.sample.delete_type %}
-    <a href={% url "type-delete" type.id %} class="btn btn-outline-danger">delete</a>
+    <a href={% url "type-delete" type.id %} class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i> delete</a>
   {% endif %}
 </span>
 {% endblock %}

@@ -39,7 +39,7 @@ urlpatterns = [
     re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/box/(?P<pk>\d+)/update/$',views.BoxCompartmentUpdate.as_view(),name='box-c-update'),
     re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/box/(?P<pk>\d+)/delete/$',views.BoxCompartmentDelete.as_view(),name='box-c-delete'),
     #all the tube urls
-    re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>)\d+/box/(?P<box>\d+)/tube/(?P<pk>\d+)/$',views.TubeRackDetailView.as_view(),name='tube-r-detail'),
+    re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>\d+)/box/(?P<box>\d+)/tube/(?P<pk>\d+)/$',views.TubeRackDetailView.as_view(),name='tube-r-detail'),
     re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>\d+)/box/(?P<box>\d+)/tube/create/$',views.TubeRackCreate.as_view(),name='tube-r-create'),
     re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>\d+)/box/(?P<box>\d+)/tube/(?P<pk>\d+)/update/$',views.TubeRackUpdate.as_view(),name='tube-r-update'),
     re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>\d+)/box/(?P<box>\d+)/tube/(?P<pk>\d+)/delete/$',views.TubeRackDelete.as_view(),name='tube-r-delete'),
@@ -65,7 +65,8 @@ urlpatterns = [
     path('ajax/load-racks/', views.load_racks, name='ajax_load_racks'),
     path('ajax/load-rackmodules/', views.load_rackmodules, name='ajax_load_rackmodules'),
     # Upload
-    url(r'^uploads/$', views.model_form_upload, name='upload'),
+    re_path(r'^freezer/(?P<freezer>\d+)/compartment/(?P<compartment>\d+)/rack/(?P<rack>\d+)/rackmodule/(?P<rackmodule>\d+)/uploads/$', views.model_form_upload, name='upload'),
+    #url(r'^upload/$', views.model_form_upload, name='upload'),
     # re_path(r'^search/$', views.FreezerSearchListView.as_view(), name="freezer_search_list_view"),
     re_path(r'^search/$', views.SearchListView.as_view(), name="search_list_view"),
 

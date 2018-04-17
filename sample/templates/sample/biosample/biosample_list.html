@@ -21,6 +21,6 @@
 </table>
 
 {% if perms.sample.add_biosample %}
-  <a href={% url "biosample-create" %} class="btn btn-outline-success">Create biosample</a>
+  <a href={% url "biosample-create" %} class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> biosample</a>
 {% endif %}
 {% endblock %}
