@@ -25,7 +25,7 @@
         {{ tube.box.rackmodule.name }} /
       {% endif %}
       {{ tube.box.name }}
-      on position x y
+      on position {{ tube.xvalue }} {{ tube.yvalue }}
     </p>
     {{ tube.comment|linebreaks }}
 

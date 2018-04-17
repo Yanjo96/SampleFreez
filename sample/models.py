@@ -6,7 +6,7 @@ import uuid
 from datetime import date
 
 class Document(models.Model):
-    description = models.CharField(max_length=255, blank=True)
+    box = models.CharField(max_length=50)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -100,7 +100,7 @@ class Tube(models.Model):
     box = models.ForeignKey('Box',on_delete=models.CASCADE,blank=True)
     xvalue = models.IntegerField(help_text="Enter the postion of the tube in the x coordinate", blank=True)
     yvalue = models.IntegerField(help_text="Enter the postion of the tube in the y coordinate", blank=True)
-    biosample = models.ForeignKey('BioSample',on_delete=models.CASCADE)
+    biosample = models.ForeignKey('BioSample',on_delete=models.CASCADE, blank=True, null=True)
     comment = models.TextField(max_length=1000,help_text="Enter a comment if you want",blank=True)
 
     class Meta:

@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from .forms import FreezerForm, CompartmentForm, RackForm, RackmoduleForm, BoxCompartmentForm, BoxRackForm, TubeForm, BioSampleForm, TypeForm, DocumentForm
 from django.shortcuts import redirect
 import operator
+import os
 
 from django.db.models import Q
 from functools import reduce
@@ -32,13 +33,32 @@ def model_form_upload(request, freezer, compartment, rack, rackmodule):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            handle_uploaded_file('documents/' + str(request.FILES.get('document')), freezer, compartment, rack, rackmodule, request.POST.get('box'))
             return redirect('rackmodule-detail', freezer=freezer, compartment=compartment, rack=rack, pk=rackmodule)
-            #return redirect('index')
     else:
         form = DocumentForm()
     return render(request, 'sample/model_form_upload.html', {
         'form': form
     })
+
+def handle_uploaded_file(filepath, freezer, compartment, rack, rackmodule, box):
+    if(filepath[-3:] == 'csv'):
+        dic = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,'J':10,'K':11,'L':12,'M':13,'N':14,'O':15,'P':16,'Q':17,'R':18,'S':19,'T':20,'U':21,'V':22,'W':23,'X':24,'Y':25,'Z':26}
+        freezer_id = Freezer.objects.get(pk=freezer)
+        compartment_id = Compartment.objects.get(pk=compartment)
+        rack_id = Rack.objects.get(pk=rack)
+        rackmodule_id = Rackmodule.objects.get(pk=rackmodule)
+
+        file_object = open(filepath, 'r')
+        myBox = Box.objects.create(name=box, space=len(file_object.readlines()), freezer=freezer_id, compartment=compartment_id, rack=rack_id, rackmodule=rackmodule_id)
+        file_object.close()
+        file_object = open(filepath, 'r')
+        for line in file_object.readlines():
+            line = line[:-2].split(',')
+            if(line[4] != 'No Tube'):
+                Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
+        file_object.close()
+    os.remove(filepath)
 
 # Um nur ein Compartment auzuwählen das auch im dazugehörigen Freezer liegt und nicht
 # eins random genommen werden kann
@@ -46,9 +66,6 @@ def load_compartments(request):
     freezer_id = request.GET.get('freezer')
     compartments = Compartment.objects.filter(freezer_id=freezer_id).order_by('name')
     return render(request, 'sample/compartment/compartment_dropdown_list_options.html', {'compartments': compartments})
-
-def popup(request):
-    return render(request, 'sample/type/type_form.html')
 
 # Um nur ein Rack auzuwählen das auch im dazugehörigen Compartment liegt und nicht
 # eins random genommen werden kann

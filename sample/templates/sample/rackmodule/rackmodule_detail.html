@@ -16,7 +16,7 @@
       {% for box in rackmodule.box_set.all %}
       <tr class="table-secondary">
         <td><a href="{{ box.get_absolute_rack_url }}">{{ box.name }}</a></td>
-        <td style="text-align:center; width:500px">{{ box.tube_set.count }}/{{ rackmodule.space }}</td>
+        <td style="text-align:center; width:500px">{{ box.tube_set.count }}/{{ box.space }}</td>
       </tr>
       {% endfor %}
     </tbody>
