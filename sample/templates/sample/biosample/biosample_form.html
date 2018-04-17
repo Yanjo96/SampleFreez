@@ -91,23 +91,59 @@
 <script>
 
     var ids = ["#id_state","#id_sober","#id_centrifugate","#id_pipet","#id_commentstep","#id_plasma","#id_plasmanumber","#id_seroes","#id_seroesnumber","#id_commentaliquot","#id_aliquot","#id_tubes","#id_transfer"];
-    if($('id_type') != '1'){
+    if($('id_type') != 1 || $('id_type') != 2 || $('id_type') != 3 || $('id_type') != 4 || $('id_type') != 5 || $('id_type') != 6 || $('id_type') != 7 || $('id_type') != 8){
       for(i=0;i<ids.length;i++){
         $(ids[i]).parent().parent().hide();
       }
     }
 
     $('#id_type').change(function() {
+      console.log($('id_type'))
       switch ($(this).val()) {
         case '1':
-        for(i=0;i<ids.length;i++){
-          $(ids[i]).parent().parent().show();
-        }
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
+          break;
+        case '2':
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
+          break;
+        case '3':
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
+          break;
+        case '4':
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
+          break;
+        case '5':
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
+          break;
+        case '6':
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
+          break;
+        case '7':
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
+          break;
+        case '8':
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().show();
+          }
           break;
         default:
-        for(i=0;i<ids.length;i++){
-          $(ids[i]).parent().parent().hide();
-        }
+          for(i=0;i<ids.length;i++){
+            $(ids[i]).parent().parent().hide();
+          }
           break;
       }
     });
