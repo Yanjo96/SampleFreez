@@ -436,7 +436,7 @@ class BioSampleUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_biosample'
     template_name = 'sample/biosample/biosample_form.html'
     model = BioSample
-    fields = '__all__'
+    form_class = BioSampleForm
 
 class BioSampleDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'sample.delete_biosample'

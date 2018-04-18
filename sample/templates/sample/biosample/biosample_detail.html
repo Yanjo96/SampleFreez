@@ -22,7 +22,7 @@
     <th>Contact person:</th>
     <td>{{ biosample.contactPerson }}</td>
   </tr>
-  {% if biosample.type.name == "Blood" %}
+  {% if biosample.type.id < 8 %}
   <tr class="table-default">
     <th colspan="2">How whas the blood taken?</th>
   </tr>
@@ -145,7 +145,7 @@
         return false; // prevent the click propagation
     });
 
-    $('.contact-form').live('submit', function() {
+    $('.contact-form').load('submit', function() {
         $.ajax({
             type: $(this).attr('method'),
             url: this.action,

@@ -57,13 +57,12 @@
     {% endfor %}
   </tbody>
   </table>
-  <div class="modal fade" id="contactModal" aria-hidden="true"><!-- Modal -->
-  </div><!-- /.modal -->
 
-  <button type="submit" class="btn btn-success">Save</button>
-  <a href={% url 'biosample' %} class="btn btn-secondary">Cancel</a>
+  <button type="submit" class="btn btn-success"><i class="far fa-save"></i> save</button>
+  <a href={% url 'biosample' %} class="btn btn-secondary"><i class="far fa-times-circle"></i> cancel</a>
 </form>
-
+<div class="modal fade" id="contactModal" aria-hidden="true"><!-- Modal -->
+</div><!-- /.modal -->
 <script>
     $(".contact").click(function(ev) { // for each edit contact url
         ev.preventDefault(); // prevent navigation
@@ -89,62 +88,26 @@
 </script>
 
 <script>
-
     var ids = ["#id_state","#id_sober","#id_centrifugate","#id_pipet","#id_commentstep","#id_plasma","#id_plasmanumber","#id_seroes","#id_seroesnumber","#id_commentaliquot","#id_aliquot","#id_tubes","#id_transfer"];
-    if($('id_type') != 1 || $('id_type') != 2 || $('id_type') != 3 || $('id_type') != 4 || $('id_type') != 5 || $('id_type') != 6 || $('id_type') != 7 || $('id_type') != 8){
-      for(i=0;i<ids.length;i++){
-        $(ids[i]).parent().parent().hide();
-      }
+    if($("#id_type").val() < 8 && $("#id_type").val() != '') {
+        for(i=0;i<ids.length;i++){
+          $(ids[i]).parent().parent().show();
+        }
+    }else{
+        for(i=0;i<ids.length;i++){
+          $(ids[i]).parent().parent().hide();
+        }
     }
 
     $('#id_type').change(function() {
-      console.log($('id_type'))
-      switch ($(this).val()) {
-        case '1':
+      if($("#id_type").val() < 8 && $("#id_type").val() != '') {
           for(i=0;i<ids.length;i++){
             $(ids[i]).parent().parent().show();
           }
-          break;
-        case '2':
-          for(i=0;i<ids.length;i++){
-            $(ids[i]).parent().parent().show();
-          }
-          break;
-        case '3':
-          for(i=0;i<ids.length;i++){
-            $(ids[i]).parent().parent().show();
-          }
-          break;
-        case '4':
-          for(i=0;i<ids.length;i++){
-            $(ids[i]).parent().parent().show();
-          }
-          break;
-        case '5':
-          for(i=0;i<ids.length;i++){
-            $(ids[i]).parent().parent().show();
-          }
-          break;
-        case '6':
-          for(i=0;i<ids.length;i++){
-            $(ids[i]).parent().parent().show();
-          }
-          break;
-        case '7':
-          for(i=0;i<ids.length;i++){
-            $(ids[i]).parent().parent().show();
-          }
-          break;
-        case '8':
-          for(i=0;i<ids.length;i++){
-            $(ids[i]).parent().parent().show();
-          }
-          break;
-        default:
+      }else{
           for(i=0;i<ids.length;i++){
             $(ids[i]).parent().parent().hide();
           }
-          break;
       }
     });
 </script>
