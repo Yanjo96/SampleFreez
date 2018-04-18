@@ -22,33 +22,7 @@
 </table>
 
 {% if perms.sample.add_type %}
-  <a class="contact btn btn-outline-success" href="#" data-form="{% url 'type-create' %}" title="add type"><i class="fas fa-plus-circle"></i> type</a>
+  <a class="btn btn-outline-success" href="{% url 'type-create' %}"><i class="fas fa-plus-circle"></i> type</a>
 {% endif %}
 
-<div class="modal fade" id="contactModal" aria-hidden="true"><!-- Modal -->
-</div><!-- /.modal -->
-
-<script>
-    $(".contact").click(function(ev) { // for each edit contact url
-        ev.preventDefault(); // prevent navigation
-        var url = $(this).data("form"); // get the contact form url
-        $("#contactModal").load(url, function() { // load the url into the modal
-            $(this).modal('show'); // display the modal on url load
-        });
-        return false; // prevent the click propagation
-    });
-
-    $('.modalContact').load('submit', function() {
-        $.ajax({
-            type: $(this).attr('method'),
-            url: this.action,
-            data: $(this).serialize(),
-            context: this,
-            success: function(data, status) {
-                $('#contactModal').html(data);
-            }
-        });
-        return false;
-    });
-</script>
 {% endblock %}

@@ -460,11 +460,23 @@ class TypeCreate(PermissionRequiredMixin, CreateView):
     model = Type
     template_name = 'sample/type/type_form.html'
     form_class = TypeForm
-    success_url = reverse_lazy('biosample')
 
 class TypeUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'sample.change_type'
     template_name = 'sample/type/type_form.html'
+    model = Type
+    form_class = TypeForm
+
+class TypeCreateModal(PermissionRequiredMixin, CreateView):
+    permission_required = 'sample.add_type'
+    model = Type
+    template_name = 'sample/type/type_form_modal.html'
+    form_class = TypeForm
+    success_url = reverse_lazy('biosample')
+
+class TypeUpdateModal(PermissionRequiredMixin, UpdateView):
+    permission_required = 'sample.change_type'
+    template_name = 'sample/type/type_form_modal.html'
     model = Type
     form_class = TypeForm
 

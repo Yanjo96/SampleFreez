@@ -4,7 +4,7 @@
 {% block content %}
 {% load widget_tweaks %}
 <section>
-<form method="post" id="biosampleForm" action="{% url 'biosample-create' %}" novalidate>
+<form method="post" id="biosampleForm" novalidate>
   {% if biosample.id %}
     <h3>Edit {{ biosample.name }}</h3>
   {% else %}
@@ -50,7 +50,7 @@
     </td>
     <td style="text-align:center" width="20px">
       {% if field.label == "Type" %}
-        <a class="contact" href="#" data-form="{% url 'type-create' %}" title="add type"><i class="fas fa-plus-square fa-2x" color="btprimary"></i></a>
+        <a class="contact" href="#" data-form="{% url 'type-create-modal' %}" title="add type"><i class="fas fa-plus-square fa-2x" color="btprimary"></i></a>
       {% endif %}
     </td>
     </tr>
@@ -67,6 +67,7 @@
     $(".contact").click(function(ev) { // for each edit contact url
         ev.preventDefault(); // prevent navigation
         var url = $(this).data("form"); // get the contact form url
+        console.log(url)
         $("#contactModal").load(url, function() { // load the url into the modal
             $(this).modal('show'); // display the modal on url load
         });

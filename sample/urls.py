@@ -60,6 +60,8 @@ urlpatterns = [
     re_path(r'^type/create/$',views.TypeCreate.as_view(),name='type-create'),
     re_path(r'^type/(?P<pk>\d+)/update/$',views.TypeUpdate.as_view(),name='type-update'),
     re_path(r'^type/(?P<pk>\d+)/delete/$',views.TypeDelete.as_view(),name='type-delete'),
+    re_path(r'^biosample/type/(?P<pk>\d+)/update/$',views.TypeUpdateModal.as_view(),name='type-update-modal'),
+    re_path(r'^biosample/type/create/$',views.TypeCreateModal.as_view(),name='type-create-modal'),
     # AJAX
     path('ajax/load-compartments/', views.load_compartments, name='ajax_load_compartments'),
     path('ajax/load-racks/', views.load_racks, name='ajax_load_racks'),
