@@ -62,7 +62,7 @@ def handle_uploaded_file_rack(filepath, freezer, compartment, rack, rackmodule, 
         file_object = open(filepath, 'r')
         for line in file_object.readlines():
             line = line[:-2].split(',')
-            if(line[4] != 'No Tube'):
+            if line[4] != 'No Tube':
                 Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
         file_object.close()
     os.remove(filepath)
@@ -99,7 +99,7 @@ def handle_uploaded_file_compartment(filepath, freezer, compartment, box):
         file_object = open(filepath, 'r')
         for line in file_object.readlines():
             line = line[:-2].split(',')
-            if(line[4] != 'No Tube'):
+            if line[4] != 'No Tube':
                 Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
         file_object.close()
     os.remove(filepath)

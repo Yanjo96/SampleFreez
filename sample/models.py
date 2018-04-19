@@ -90,7 +90,18 @@ class Box(models.Model):
 
     #when the box is in the compartment you dont need a rack and a rackmodule
     def get_absolute_url(self):
-            return reverse('box-c-detail',args=[str(self.freezer.id),str(self.compartment.id),str(self.id)])
+        return reverse('box-c-detail',args=[str(self.freezer.id),str(self.compartment.id),str(self.id)])
+
+    def sort_tubes(self):
+        max_xvalue = self.tube_set.all().order_by('xvalue').reverse()[1].xvalue
+        max_yvalue = self.tube_set.all().reverse()[1].yvalue
+
+        out = [ [ 'empty' for y in range( max_xvalue ) ] for x in range( max_yvalue ) ]
+
+        for tube in self.tube_set.all():
+            out[tube.yvalue-1][tube.xvalue-1] = tube
+
+        return out
 
     def __str__(self):
         return self.name
