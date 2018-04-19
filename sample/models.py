@@ -116,6 +116,7 @@ class Tube(models.Model):
 
     class Meta:
         ordering = ["yvalue","xvalue"]
+        unique_together = (("yvalue", "xvalue"),)  
 
     def get_absolute_rack_url(self):
         # Returns the URL to access a particular tube
