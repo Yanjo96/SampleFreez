@@ -3148,21 +3148,25 @@ fieldset:disabled a.btn {
 .btn-sq-lg {
   width: 150px !important;
   height: 150px !important;
+  text-align: center;
 }
 
 .btn-sq {
   width: 85px !important;
   height: 85px !important;
+  text-align: center;
 }
 
 .btn-sq-sm {
   width: 50px !important;
   height: 50px !important;
+  text-align: center;
 }
 
 .btn-sq-xs {
   width: 25px !important;
   height: 25px !important;
+  text-align: center;
   padding:2px;
 }
 
