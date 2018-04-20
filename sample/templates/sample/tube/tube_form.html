@@ -48,8 +48,14 @@
   </tbody>
   </table>
 
-    <button type="submit" class="btn btn-success">Save</button>
-    <a href={% url 'freezer' %} class="btn btn-outline-secondary">Cancel</a>
+    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> save</button>
+    {% if tube.rack.id %}
+      <a href={% url 'tube-r-detail' tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id %} class="btn btn-secondary"><i class="fas fa-times-circle"></i> cancel</a>
+    {% elif tube.id %}
+      <a href={% url 'tube-c-detail' tube.box.freezer.id tube.box.compartment.id tube.box.id tube.id %} class="btn btn-secondary"><i class="fas fa-times-circle"></i> cancel</a>
+    {% else %}
+      <a href={% url 'freezer' %} class="btn btn-secondary"><i class="fas fa-times-circle"></i> cancel</a>
+    {% endif %}
   </form>
 
 <script>
