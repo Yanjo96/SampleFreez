@@ -16,7 +16,7 @@
 {{ box.comment|linebreaks }}
 {% for tubes in box.sort_tubes %}
   {% for tube in tubes %}
-    {% if tube == 'empty' %}
+{% if tube == 'empty' %}
       {% if box.rack %}
         <a href=# class="btn btn-sq btn-secondary disabled"></a>
       {% else %}

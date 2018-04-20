@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Freezer, Compartment, Rack, Rackmodule, Box, Tube, BioSample, Type
+from .models import Freezer, Compartment, Rack, Rackmodule, Box, Tube, BioSample, Type, Document
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 #from django.contrib.auth.decorators import permission_required
@@ -38,6 +38,7 @@ def model_form_upload_rack(request, freezer, compartment, rack, rackmodule):
         if form.is_valid():
             form.save()
             handle_uploaded_file_rack('documents/' + str(request.FILES.get('document')), freezer, compartment, rack, rackmodule, request.POST.get('box'))
+            Document.objects.all().delete()
             return redirect('rackmodule-detail', freezer=freezer, compartment=compartment, rack=rack, pk=rackmodule)
     else:
         form = DocumentForm()
@@ -77,6 +78,7 @@ def model_form_upload_compartment(request, freezer, compartment):
         if form.is_valid():
             form.save()
             handle_uploaded_file_compartment('documents/' + str(request.FILES.get('document')), freezer, compartment, request.POST.get('box'))
+            Document.objects.all().delete()
             return redirect('compartment-detail', freezer=freezer, pk=compartment)
     else:
         form = DocumentForm()

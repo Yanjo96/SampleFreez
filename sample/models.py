@@ -5,10 +5,16 @@ from multiselectfield import MultiSelectField
 import uuid
 from datetime import date
 
+"""
+Model for upload files
+"""
 class Document(models.Model):
     box = models.CharField(max_length=50)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def hallo():
+        print('hallo')
 
 class Freezer(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the freezer (e.g. Freezer 1)")
@@ -94,13 +100,11 @@ class Box(models.Model):
 
     def sort_tubes(self):
         try:
-            max_xvalue = self.tube_set.all().order_by('xvalue').reverse()[1].xvalue
-            max_yvalue = self.tube_set.all().reverse()[1].yvalue
+            max_xvalue = self.tube_set.all().order_by('xvalue').reverse()[0].xvalue
+            max_yvalue = self.tube_set.all().reverse()[0].yvalue
         except:
             max_xvalue = 0
             max_yvalue = 0
-
-        #HIer stimmt noch was nicht
 
         out = [ [ 'empty' for y in range( max_xvalue ) ] for x in range( max_yvalue ) ]
 
