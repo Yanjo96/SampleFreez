@@ -93,8 +93,14 @@ class Box(models.Model):
         return reverse('box-c-detail',args=[str(self.freezer.id),str(self.compartment.id),str(self.id)])
 
     def sort_tubes(self):
-        max_xvalue = self.tube_set.all().order_by('xvalue').reverse()[1].xvalue
-        max_yvalue = self.tube_set.all().reverse()[1].yvalue
+        try:
+            max_xvalue = self.tube_set.all().order_by('xvalue').reverse()[1].xvalue
+            max_yvalue = self.tube_set.all().reverse()[1].yvalue
+        except:
+            max_xvalue = 0
+            max_yvalue = 0
+
+        #HIer stimmt noch was nicht
 
         out = [ [ 'empty' for y in range( max_xvalue ) ] for x in range( max_yvalue ) ]
 
@@ -116,7 +122,7 @@ class Tube(models.Model):
 
     class Meta:
         ordering = ["yvalue","xvalue"]
-        unique_together = (("yvalue", "xvalue"),)  
+        unique_together = (("yvalue", "xvalue","box"),)
 
     def get_absolute_rack_url(self):
         # Returns the URL to access a particular tube
