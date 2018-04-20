@@ -34,12 +34,15 @@ A view to handle the upload
 """
 def model_form_upload_rack(request, freezer, compartment, rack, rackmodule):
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            handle_uploaded_file_rack('documents/' + str(request.FILES.get('document')), freezer, compartment, rack, rackmodule, request.POST.get('box'))
-            Document.objects.all().delete()
-            return redirect('rackmodule-detail', freezer=freezer, compartment=compartment, rack=rack, pk=rackmodule)
+        try:
+            form = DocumentForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                handle_uploaded_file_rack('documents/' + str(request.FILES.get('document')), freezer, compartment, rack, rackmodule, request.POST.get('box'))
+                Document.objects.all().delete()
+                return redirect('rackmodule-detail', freezer=freezer, compartment=compartment, rack=rack, pk=rackmodule)
+        except:
+            return render(request, 'sample/wrong_file_input.html')
     else:
         form = DocumentForm()
     return render(request, 'sample/model_form_upload.html', {
@@ -66,7 +69,10 @@ def handle_uploaded_file_rack(filepath, freezer, compartment, rack, rackmodule, 
             if line[4] != 'No Tube':
                 Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
         file_object.close()
-    os.remove(filepath)
+        os.remove(filepath)
+    else:
+        os.remove(filepath)
+        raise Exception("Wrong fileformat, please use csv files")
 
 """
 the path documents/ is here and in the model (Document) hardcoded maybe that is not the best solution
@@ -74,12 +80,15 @@ A view to handle the upload
 """
 def model_form_upload_compartment(request, freezer, compartment):
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            handle_uploaded_file_compartment('documents/' + str(request.FILES.get('document')), freezer, compartment, request.POST.get('box'))
-            Document.objects.all().delete()
+        try:
+            form = DocumentForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                handle_uploaded_file_compartment('documents/' + str(request.FILES.get('document')), freezer, compartment, request.POST.get('box'))
+                Document.objects.all().delete()
             return redirect('compartment-detail', freezer=freezer, pk=compartment)
+        except:
+            return render(request, 'sample/wrong_file_input.html')
     else:
         form = DocumentForm()
     return render(request, 'sample/model_form_upload.html', {
@@ -104,7 +113,10 @@ def handle_uploaded_file_compartment(filepath, freezer, compartment, box):
             if line[4] != 'No Tube':
                 Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
         file_object.close()
-    os.remove(filepath)
+        os.remove(filepath)
+    else:
+        os.remove(filepath)
+        raise Exception("Wrong fileformat, please use csv files")
 
 
 # Um nur ein Compartment auzuwählen das auch im dazugehörigen Freezer liegt und nicht
