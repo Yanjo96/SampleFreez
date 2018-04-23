@@ -206,4 +206,8 @@
   </table>
 {% endif %}
 
+{% if not freezer_list and  not compartment_list and not rack_list and not rackmodule_list and not box_list and not tube_list and not biosample_list and not type_list  and not user_list%}
+ <h3>Nothing found</h3>
+{% endif %}
+
 {% endblock %}

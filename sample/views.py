@@ -422,6 +422,7 @@ class BioSampleListView(LoginRequiredMixin, generic.ListView):
     template_name = 'sample/biosample/biosample_list.html'
     model = BioSample
     paginate_by = 10
+    queryset = BioSample.objects.all()
 
 class BioSampleDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'sample/biosample/biosample_detail.html'
@@ -451,6 +452,8 @@ Type view
 class TypeListView(LoginRequiredMixin, generic.ListView):
     template_name = 'sample/type/type_list.html'
     model = Type
+    paginate_by = 2
+    queryset = Type.objects.all()
 
 class TypeDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'sample/type/type_detail.html'
