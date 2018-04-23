@@ -9,6 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from .forms import FreezerForm, CompartmentForm, RackForm, RackmoduleForm, BoxCompartmentForm, BoxRackForm, TubeForm, BioSampleForm, TypeForm, DocumentForm
 from django.shortcuts import redirect
+from django.core import paginator
 import operator
 import os
 
@@ -34,15 +35,12 @@ A view to handle the upload
 """
 def model_form_upload_rack(request, freezer, compartment, rack, rackmodule):
     if request.method == 'POST':
-        try:
-            form = DocumentForm(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-                handle_uploaded_file_rack('documents/' + str(request.FILES.get('document')), freezer, compartment, rack, rackmodule, request.POST.get('box'))
-                Document.objects.all().delete()
-                return redirect('rackmodule-detail', freezer=freezer, compartment=compartment, rack=rack, pk=rackmodule)
-        except:
-            return render(request, 'sample/wrong_file_input.html')
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            handle_uploaded_file_rack('documents/' + str(request.FILES.get('document')), freezer, compartment, rack, rackmodule, request.POST.get('box'))
+            Document.objects.all().delete()
+            return redirect('rackmodule-detail', freezer=freezer, compartment=compartment, rack=rack, pk=rackmodule)
     else:
         form = DocumentForm()
     return render(request, 'sample/model_form_upload.html', {
@@ -53,26 +51,22 @@ def model_form_upload_rack(request, freezer, compartment, rack, rackmodule):
 Put the uploaded file in a new Box and create all the tubes in it, after that it delete the uploaded file
 """
 def handle_uploaded_file_rack(filepath, freezer, compartment, rack, rackmodule, box):
-    if(filepath[-3:] == 'csv'):
-        dic = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,'J':10,'K':11,'L':12,'M':13,'N':14,'O':15,'P':16,'Q':17,'R':18,'S':19,'T':20,'U':21,'V':22,'W':23,'X':24,'Y':25,'Z':26}
-        freezer_id = Freezer.objects.get(pk=freezer)
-        compartment_id = Compartment.objects.get(pk=compartment)
-        rack_id = Rack.objects.get(pk=rack)
-        rackmodule_id = Rackmodule.objects.get(pk=rackmodule)
+    dic = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,'J':10,'K':11,'L':12,'M':13,'N':14,'O':15,'P':16,'Q':17,'R':18,'S':19,'T':20,'U':21,'V':22,'W':23,'X':24,'Y':25,'Z':26}
+    freezer_id = Freezer.objects.get(pk=freezer)
+    compartment_id = Compartment.objects.get(pk=compartment)
+    rack_id = Rack.objects.get(pk=rack)
+    rackmodule_id = Rackmodule.objects.get(pk=rackmodule)
 
-        file_object = open(filepath, 'r')
-        myBox = Box.objects.create(name=box, space=len(file_object.readlines()), freezer=freezer_id, compartment=compartment_id, rack=rack_id, rackmodule=rackmodule_id)
-        file_object.close()
-        file_object = open(filepath, 'r')
-        for line in file_object.readlines():
-            line = line[:-2].split(',')
-            if line[4] != 'No Tube':
-                Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
-        file_object.close()
-        os.remove(filepath)
-    else:
-        os.remove(filepath)
-        raise Exception("Wrong fileformat, please use csv files")
+    file_object = open(filepath, 'r')
+    myBox = Box.objects.create(name=box, space=len(file_object.readlines()), freezer=freezer_id, compartment=compartment_id, rack=rack_id, rackmodule=rackmodule_id)
+    file_object.close()
+    file_object = open(filepath, 'r')
+    for line in file_object.readlines():
+        line = line[:-2].split(',')
+        if line[4] != 'No Tube':
+            Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
+    file_object.close()
+    os.remove(filepath)
 
 """
 the path documents/ is here and in the model (Document) hardcoded maybe that is not the best solution
@@ -80,15 +74,12 @@ A view to handle the upload
 """
 def model_form_upload_compartment(request, freezer, compartment):
     if request.method == 'POST':
-        try:
-            form = DocumentForm(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-                handle_uploaded_file_compartment('documents/' + str(request.FILES.get('document')), freezer, compartment, request.POST.get('box'))
-                Document.objects.all().delete()
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            handle_uploaded_file_compartment('documents/' + str(request.FILES.get('document')), freezer, compartment, request.POST.get('box'))
+            Document.objects.all().delete()
             return redirect('compartment-detail', freezer=freezer, pk=compartment)
-        except:
-            return render(request, 'sample/wrong_file_input.html')
     else:
         form = DocumentForm()
     return render(request, 'sample/model_form_upload.html', {
@@ -99,24 +90,20 @@ def model_form_upload_compartment(request, freezer, compartment):
 Put the uploaded file in a new Box and create all the tubes in it, after that it delete the uploaded file
 """
 def handle_uploaded_file_compartment(filepath, freezer, compartment, box):
-    if(filepath[-3:] == 'csv'):
-        dic = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,'J':10,'K':11,'L':12,'M':13,'N':14,'O':15,'P':16,'Q':17,'R':18,'S':19,'T':20,'U':21,'V':22,'W':23,'X':24,'Y':25,'Z':26}
-        freezer_id = Freezer.objects.get(pk=freezer)
-        compartment_id = Compartment.objects.get(pk=compartment)
+    dic = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,'J':10,'K':11,'L':12,'M':13,'N':14,'O':15,'P':16,'Q':17,'R':18,'S':19,'T':20,'U':21,'V':22,'W':23,'X':24,'Y':25,'Z':26}
+    freezer_id = Freezer.objects.get(pk=freezer)
+    compartment_id = Compartment.objects.get(pk=compartment)
 
-        file_object = open(filepath, 'r')
-        myBox = Box.objects.create(name=box, space=len(file_object.readlines()), freezer=freezer_id, compartment=compartment_id)
-        file_object.close()
-        file_object = open(filepath, 'r')
-        for line in file_object.readlines():
-            line = line[:-2].split(',')
-            if line[4] != 'No Tube':
-                Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
-        file_object.close()
-        os.remove(filepath)
-    else:
-        os.remove(filepath)
-        raise Exception("Wrong fileformat, please use csv files")
+    file_object = open(filepath, 'r')
+    myBox = Box.objects.create(name=box, space=len(file_object.readlines()), freezer=freezer_id, compartment=compartment_id)
+    file_object.close()
+    file_object = open(filepath, 'r')
+    for line in file_object.readlines():
+        line = line[:-2].split(',')
+        if line[4] != 'No Tube':
+            Tube.objects.create(name=line[4],box=Box.objects.get(pk=myBox.id), xvalue=line[2], yvalue=dic[line[3]])
+    file_object.close()
+    os.remove(filepath)
 
 
 # Um nur ein Compartment auzuwählen das auch im dazugehörigen Freezer liegt und nicht

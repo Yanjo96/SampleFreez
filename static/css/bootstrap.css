@@ -3163,6 +3163,11 @@ fieldset:disabled a.btn {
   text-align: center;
 }
 
+.breakAll {
+  word-wrap: break-word;
+  white-space: normal;
+}
+
 .btn-sq-xs {
   width: 25px !important;
   height: 25px !important;

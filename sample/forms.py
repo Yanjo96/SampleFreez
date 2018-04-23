@@ -224,6 +224,19 @@ class TypeForm(forms.ModelForm):
 
 # To upload files
 class DocumentForm(forms.ModelForm):
+    error_messages = {
+        'wrong_input': 'The input format is wrong. Please use csv files.',
+    }
+
     class Meta:
         model = Document
-        fields = ('box', 'document', )
+        fields = ['box', 'document']
+
+    def clean_document(self):
+        data = self.cleaned_data['document']
+        #Check compartment isnt full.
+        if int(str(data)[-3:] != 'csv'):
+            msg = self.error_messages['wrong_input']
+            self.add_error(NON_FIELD_ERRORS, msg)
+        # Remember to always return the cleaned data.
+        return data
