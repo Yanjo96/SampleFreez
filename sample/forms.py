@@ -82,7 +82,7 @@ class RackmoduleForm(forms.ModelForm):
         data = self.cleaned_data['rack']
         rack_id = self.data.get('rack')
         full = int(Rackmodule.objects.filter(rack_id=rack_id).count())
-        #Check compartment isnt full.
+        #Check rack isnt full.
         if int(data.space) < full+1:
             msg = self.error_messages['rack_full']
             self.add_error(NON_FIELD_ERRORS, msg)
@@ -114,10 +114,8 @@ class BoxRackForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BoxRackForm, self).__init__(*args, **kwargs)
-        #self.fields['compartment'].queryset = Compartment.objects.none()
-        #self.fields['rack'].queryset = Rack.objects.none()
-        #self.fields['rackmodule'].queryset = Rackmodule.objects.none()
 
+        #Create a new queryset for compartment so you can only choose the compartments which are part of the choosen freezer
         if 'freezer' in self.data:
             try:
                 freezer_id = int(self.data.get('freezer'))
@@ -127,6 +125,7 @@ class BoxRackForm(forms.ModelForm):
         elif self.instance.pk:
             self.fields['compartment'].queryset = self.instance.freezer.compartment_set.order_by('name')
 
+        #Create a new queryset for rack so you can only choose the racks which are part of the choosen compartment
         if 'compartment' in self.data:
             try:
                 compartment_id = int(self.data.get('compartment'))
@@ -136,6 +135,7 @@ class BoxRackForm(forms.ModelForm):
         elif self.instance.pk:
             self.fields['rack'].queryset = self.instance.compartment.rack_set.order_by('name')
 
+        #Create a new queryset for rackmodule so you can only choose the rackmodules which are part of the choosen rack
         if 'rack' in self.data:
             try:
                 rack_id = int(self.data.get('rack'))
@@ -169,7 +169,6 @@ class BoxCompartmentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.fields['compartment'].queryset = Compartment.objects.none()
 
         if 'freezer' in self.data:
             try:
@@ -185,7 +184,7 @@ class TubeForm(forms.ModelForm):
 
     error_messages = {
         'box_full': 'The box is full',
-        # Error when xValue and yValue are same as in a other tube
+        # Error when if an other tube has already the place of the new tube
         'is_occupied': 'The Place is occupied',
     }
 
@@ -197,7 +196,7 @@ class TubeForm(forms.ModelForm):
         data = self.cleaned_data['box']
         box_id = self.data.get('box')
         full = int(Tube.objects.filter(box_id=box_id).count())
-        #Check compartment isnt full.
+        #Check box isnt full.
         if int(data.space) < full+1:
             msg = self.error_messages['box_full']
             self.add_error(NON_FIELD_ERRORS, msg)
@@ -234,8 +233,8 @@ class DocumentForm(forms.ModelForm):
 
     def clean_document(self):
         data = self.cleaned_data['document']
-        #Check compartment isnt full.
-        if int(str(data)[-3:] != 'csv'):
+        #Check file format.
+        if str(data)[-3:] != 'csv':
             msg = self.error_messages['wrong_input']
             self.add_error(NON_FIELD_ERRORS, msg)
         # Remember to always return the cleaned data.

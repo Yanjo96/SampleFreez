@@ -24,8 +24,14 @@
         <a href=# class="btn btn-sq btn-secondary disabled"></a>
       {% endif %}
     {% else %}
-      {% if tubes.box.rack %}
-        <a href={% url "tube-r-detail" tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id %} class="btn btn-sq btn-secondary breakAll"><i class="fas fa-vial"></i><br/>{{ tube.name|linebreaks }}</a>
+      {% if tube.box.rack %}
+        {% if tube.biosample.type.code == "eu" %}
+          <a class="btn btn-sq breakAll" href="{% url 'tube-r-detail' tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id %}" style="background-color:{{ tube.biosample.type.euColor }};color:black"><i class="fas fa-vial"></i><br/>{{ tube.name|linebreaks }}</a>
+        {% elif tube.biosample.type.code == "us" %}
+          <a class="btn btn-sq breakAll" href="{% url 'tube-r-detail' tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id %}" style="background-color:{{ tube.biosample.type.usColor }};color:black"><i class="fas fa-vial"></i><br/>{{ tube.name|linebreaks }}</a>
+        {% else %}
+          <a href={% url "tube-r-detail" tube.box.freezer.id tube.box.compartment.id tube.box.rack.id tube.box.rackmodule.id tube.box.id tube.id %} class="btn btn-sq btn-secondary breakAll"><i class="fas fa-vial"></i><br/>{{ tube.name|linebreaks }}</a>
+        {% endif %}
       {% else %}
         <a href={% url "tube-c-detail" tube.box.freezer.id tube.box.compartment.id tube.box.id tube.id %} class="btn btn-sq btn-secondary breakAll"><i class="fas fa-vial"></i><br/>{{ tube.name|linebreaks }}</a>
       {% endif %}

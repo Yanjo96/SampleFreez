@@ -13,9 +13,9 @@ class Document(models.Model):
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def hallo():
-        print('hallo')
-
+"""
+Model for the Freezer.
+"""
 class Freezer(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the freezer (e.g. Freezer 1)")
     temperature = models.IntegerField(help_text="Enter the temperature of the freezer (e.g. -80)")
@@ -31,9 +31,12 @@ class Freezer(models.Model):
     def __str__(self):
         return self.name
 
+"""
+Model for the compartment
+"""
 class Compartment(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the copartment (e.g. Compartment 1)")
-    space = models.IntegerField(help_text="Enter how many racks can store in the compartment")
+    space = models.IntegerField(help_text="Enter how many racks/boxes can store in the compartment")
     freezer = models.ForeignKey('Freezer',on_delete=models.CASCADE)
 
     class Meta:
@@ -44,11 +47,15 @@ class Compartment(models.Model):
         return reverse('compartment-detail',args=[str(self.freezer.id),str(self.id)])
 
     def get_number_of_space(self):
+        # Returns the taken place in the Compartment cause of you can store racks and boxes in it
         return int(Rack.objects.filter(compartment_id=self.id).count()) + int(Box.objects.filter(compartment_id=self.id).filter(rack_id__isnull='True').count())
 
     def __str__(self):
         return self.name
 
+"""
+Model for the Rack
+"""
 class Rack(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the rack (e.g. Rack 1)")
     space = models.IntegerField(help_text="Enter how many rackmodules can store in the rack")
@@ -64,6 +71,9 @@ class Rack(models.Model):
     def __str__(self):
         return self.name
 
+"""
+Model for the Rackmodule
+"""
 class Rackmodule(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the rackmodule (e.g. Rackmodule 1)")
     space = models.IntegerField(help_text="Enter how many boxes can store in the rackmodule")
@@ -78,12 +88,15 @@ class Rackmodule(models.Model):
     def __str__(self):
         return self.name
 
+"""
+Model for the Box
+"""
 class Box(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the Box (e.g. Box 1)")
     space = models.IntegerField(help_text="Enter how many tubes can store in the box")
     freezer = models.ForeignKey('Freezer',on_delete=models.CASCADE)
     compartment = models.ForeignKey('Compartment',on_delete=models.CASCADE)
-    #when the box is in the compartment you dont need a rack and a rackmodule
+    #when the box is in the compartment you dont need a rack and a rackmodule cause of this there are 2 types of urls
     rack = models.ForeignKey('Rack',on_delete=models.CASCADE, blank=True,null=True)
     rackmodule = models.ForeignKey('Rackmodule', on_delete=models.CASCADE, blank=True, null=True)
     comment = models.TextField(max_length=1000,help_text="Enter a comment if you want",blank=True)
@@ -91,6 +104,7 @@ class Box(models.Model):
     class Meta:
         ordering = ["name"]
 
+    # If the Box is store in the rack you will nieed much more information in the url
     def get_absolute_rack_url(self):
         return reverse('box-r-detail',args=[str(self.freezer.id),str(self.compartment.id),str(self.rack.id),str(self.rackmodule.id),str(self.id)])
 
@@ -98,14 +112,19 @@ class Box(models.Model):
     def get_absolute_url(self):
         return reverse('box-c-detail',args=[str(self.freezer.id),str(self.compartment.id),str(self.id)])
 
+    """
+    To show the tubes in the right order like in the box you need a 2d array which you can display in the template
+    """
     def sort_tubes(self):
+        # if the box is empty self...[0] will return an error
         try:
             max_xvalue = self.tube_set.all().order_by('xvalue').reverse()[0].xvalue
-            max_yvalue = self.tube_set.all().reverse()[0].yvalue
+            max_yvalue = self.tube_set.all().order_by('yvalue').reverse()[0].yvalue
         except:
             max_xvalue = 0
             max_yvalue = 0
 
+        # create an empty arrow in the right size
         out = [ [ 'empty' for y in range( max_xvalue ) ] for x in range( max_yvalue ) ]
 
         for tube in self.tube_set.all():
@@ -116,6 +135,9 @@ class Box(models.Model):
     def __str__(self):
         return self.name
 
+"""
+Model for the tube
+"""
 class Tube(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the rack (e.g. Tube 1)")
     box = models.ForeignKey('Box',on_delete=models.CASCADE,blank=True)
@@ -128,6 +150,7 @@ class Tube(models.Model):
         ordering = ["yvalue","xvalue"]
         unique_together = (("yvalue", "xvalue","box"),)
 
+    # Same as in the boxes, cause of the boexes where the tubes are can store directly in the compartment you will need a 2nd url
     def get_absolute_rack_url(self):
         # Returns the URL to access a particular tube
         return reverse('tube-r-detail',args=[str(self.box.freezer.id),str(self.box.compartment.id),str(self.box.rack.id),str(self.box.rackmodule.id),str(self.box.id),str(self.id)])
@@ -140,6 +163,9 @@ class Tube(models.Model):
     def __str__(self):
         return self.name
 
+"""
+Model for the Biosample
+"""
 class BioSample(models.Model):
     name = models.CharField(max_length=50, help_text="Enter a name for the biosample (e.g. Biosample 1)")
     whoose = models.CharField(max_length=50, help_text="Enter the id whoose biosample is for (e.g. T1234)")
@@ -161,12 +187,10 @@ class BioSample(models.Model):
     )
     sober = models.CharField(max_length=50, choices=SOBER_CHOICES,blank=True)
 
-    # koennte man in der view mit überschrift Verarbeitungschritte einruecken
     centrifugate = models.BooleanField(blank=True)
     pipet = models.BooleanField(blank=True)
     commentstep = models.TextField(max_length=1000,help_text="Enter a comment",blank=True)
 
-    # koennte man in der view mit überschrift aliquotierung einruecken
     plasma = models.BooleanField(blank=True)
     plasmanumber = models.IntegerField(blank=True, default=0)
     seroes = models.BooleanField(blank=True)
@@ -190,9 +214,55 @@ class BioSample(models.Model):
     def __str__(self):
         return self.name
 
+"""
+Modal for the type
+"""
 class Type(models.Model):
+
+    def euColor(self):
+        eu_color = {
+            'serum':'#FFFFFF',              #white
+            'serum-gel':'#8B4513',          #brown
+            'lithium-heparin':'#FF8000',    #orange
+            'flouride':'#FFFF00',           #yellow
+            'edta ke':'#DF0101',            #red
+            'citrat bsg':'#CC2EFA',         #violet
+            'citrat coagulation':'#04B404', #green
+        }
+        return(eu_color[self.color])
+
+    def usColor(self):
+        us_color = {
+            'serum':'#DF0101',              #red
+            'serum-gel':'#8B4513',          #brown
+            'lithium-heparin':'#04B404',    #green
+            'flouride':'#848484',           #gray
+            'edta ke':'#CC2EFA',            #violet
+            'citrat bsg':'#000000',         #black
+            'citrat coagulation':'#00BFFF', #blue
+        }
+        return(us_color[self.color])
+
     name = models.CharField(max_length=50, help_text="Enter the type of the biosample (e.g. Blood)")
     comment = models.TextField(blank=True,help_text="Enter a comment if you want")
+
+    COLORCODE_CHOICES = (
+        ('eu','EU'),
+        ('us','US'),
+    )
+    code = models.CharField(max_length=50,choices=COLORCODE_CHOICES,blank=True)
+
+    COLOR_CHOICES = (
+        ('serum','Serum'),
+        ('serum-gel','Serum-Gel'),
+        ('lithium-heparin','Lithium-Heparin'),
+        ('flouride','flouride'),
+        ('edta ke','EDTA KA'),
+        ('citrat bsg','Citrat BSG'),
+        ('citrat coagulation','Citrat coagulation'),
+    )
+
+    color = models.CharField(max_length=50, choices=COLOR_CHOICES,blank=True)
 
     class Meta:
         ordering = ["name"]

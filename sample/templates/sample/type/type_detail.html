@@ -5,7 +5,16 @@
   <li class="breadcrumb-item"><a href={% url "type" %}>Type</a></li>
   <li class="breadcrumb-item">{{ type.name }}</li>
 </ol>
+<span style="float:right">
+  {% if type.code == "eu" %}
+    EU colorcode: <input type:"button" class="btn btn-sq-xs disabled" style="background-color: {{ type.euColor }}; border: 3px solid black;", value=""></input>
+  {% elif type.code == "us" %}
+    US colorcode: <input type="button" class="btn btn-sq-xs disabled" style="background-color: {{ type.usColor }}; border: 3px solid black;", value=""></input>
+  {% endif %}
+</span>
 <h2>{{ type.name }}</h2>
+
+<br>
 {% if type.comment %}
   {{ type.comment|linebreaks }}
 {% endif %}
