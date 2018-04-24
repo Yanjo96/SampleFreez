@@ -68,8 +68,9 @@
 {% endif %}
 {% endif %}
 
+<input type="button" id="changeButton" class="btn btn-secondary text-center" onclick="myFunction()" value="List View"></input>
+
 <span style="float:right">
-  <input type="button" id="changeButton" class="btn btn-secondary" onclick="myFunction()" value="List View"></input>
   {% if perms.sample.change_rack %}
     {% if box.rack %}
       <a href={% url "box-r-update" box.freezer.id box.compartment.id box.rack.id box.rackmodule.id box.id %} class="btn btn-outline-primary"><i class="fas fa-pencil-alt"></i> edit</a>

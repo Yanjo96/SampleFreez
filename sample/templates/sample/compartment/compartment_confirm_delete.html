@@ -1,29 +1,7 @@
-<!DOCTYPE html>
-<html lang="eng">
-<head>
-    {% block title %}<title>SampleFreez</title>{% endblock %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
-  <!-- Add additional CSS in static file -->
-  {% load static %}
-  {% load bootstrap4 %}
-
-  {% bootstrap_css %}
-  {% bootstrap_javascript jquery='full' %}
-  {% bootstrap_messages %}
-
-  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
-  <script defer src="/static/js/fontawesome-all.js"></script>
-
-</head>
-<body>
+{% extends "modal_generic.html" %}
 
 {% block content %}
 {% load widget_tweaks %}
-
 <form method='post' action="{% url 'compartment-delete' compartment.freezer.id compartment.id %}" novalidate>
   {% csrf_token %}
 <div class="modal-dialog modal-lg">
@@ -48,5 +26,3 @@
   </div><!-- /.modal-dialog -->
   </form>
 {% endblock %}
-</body>
-</html>
