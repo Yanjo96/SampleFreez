@@ -53,7 +53,7 @@
   <input type="hidden" name="next" value="{{ next }}" />
   {# Assumes you setup the password_reset view in your URLconf #}
   <span style="float:right">
-    <a href="{% url 'password_reset' %}">Lost password?</a>
+    <p><a href="{% url 'password_reset' %}">Lost password?</a> or <a href="{% url 'signup' %}">Sign up</a></p>
   </span>
 </div>
 </form>

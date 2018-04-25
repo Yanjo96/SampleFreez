@@ -147,8 +147,8 @@ class Tube(models.Model):
     comment = models.TextField(max_length=1000,help_text="Enter a comment if you want",blank=True)
 
     class Meta:
-        ordering = ["yvalue","xvalue"]
-        unique_together = (("yvalue", "xvalue","box"),)
+        ordering = ["xvalue","yvalue"]
+        unique_together = (("xvalue", "yvalue","box"),)
 
     # Same as in the boxes, cause of the boexes where the tubes are can store directly in the compartment you will need a 2nd url
     def get_absolute_rack_url(self):
@@ -221,25 +221,25 @@ class Type(models.Model):
 
     def euColor(self):
         eu_color = {
-            'serum':'#FFFFFF',              #white
-            'serum-gel':'#8B4513',          #brown
-            'lithium-heparin':'#FF8000',    #orange
-            'flouride':'#FFFF00',           #yellow
-            'edta ke':'#DF0101',            #red
-            'citrat bsg':'#CC2EFA',         #violet
-            'citrat coagulation':'#04B404', #green
+            'serum':'rgba(255, 255, 255, 0.4)',          #white
+            'serum-gel':'rgba(139, 69, 19, 0.4)',        #brown
+            'lithium-heparin':'rgba(255, 128, 0, 0.4)',  #orange
+            'flouride':'rgba(255, 255, 0, 0.4)',         #yellow
+            'edta ke':'rgba(223, 1, 1, 0.4)',            #red
+            'citrat bsg':'rgba(204, 46, 250, 0.4)',      #violet
+            'citrat coagulation':'rgba(4, 180, 4, 0.4)', #green
         }
         return(eu_color[self.color])
 
     def usColor(self):
         us_color = {
-            'serum':'#DF0101',              #red
-            'serum-gel':'#8B4513',          #brown
-            'lithium-heparin':'#04B404',    #green
-            'flouride':'#848484',           #gray
-            'edta ke':'#CC2EFA',            #violet
-            'citrat bsg':'#000000',         #black
-            'citrat coagulation':'#00BFFF', #blue
+            'serum':'rgba(223, 1, 1, 0.4)',                #red
+            'serum-gel':'rgba(139, 69, 19, 0.4)',          #brown
+            'lithium-heparin':'rgba(4, 180, 4, 0.4)',      #green
+            'flouride':'rgba(132, 132, 132, 0.4)',         #gray
+            'edta ke':'rgba(204, 46, 250, 0.4)',           #violet
+            'citrat bsg':'rgba(0, 0, 0, 0.4)',             #black
+            'citrat coagulation':'rgba(0, 191, 255, 0.4)', #blue
         }
         return(us_color[self.color])
 

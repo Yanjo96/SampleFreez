@@ -3168,6 +3168,12 @@ fieldset:disabled a.btn {
   white-space: normal;
 }
 
+.square {
+    width: 25px;
+    height: 25px;
+    border: 3px solid black;
+}
+
 .btn-sq-xs {
   width: 25px !important;
   height: 25px !important;

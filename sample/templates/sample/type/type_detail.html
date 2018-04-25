@@ -7,9 +7,9 @@
 </ol>
 <span style="float:right">
   {% if type.code == "eu" %}
-    EU colorcode: <input type:"button" class="btn btn-sq-xs disabled" style="background-color: {{ type.euColor }}; border: 3px solid black;", value=""></input>
+    EU colorcode: <div class="square" style="background:{{ type.euColor }}; display:inline-block"></div>
   {% elif type.code == "us" %}
-    US colorcode: <input type="button" class="btn btn-sq-xs disabled" style="background-color: {{ type.usColor }}; border: 3px solid black;", value=""></input>
+    US colorcode: <div class="square" style="background:{{ type.usColor }}; display:inline-block"></div>
   {% endif %}
 </span>
 <h2>{{ type.name }}</h2>
