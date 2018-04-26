@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse # Used to generate urls by reversing the URL pattern
 from multiselectfield import MultiSelectField
 
 import uuid
 from datetime import date
+
 
 """
 Model for upload files
