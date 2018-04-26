@@ -9,6 +9,8 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from .forms import FreezerForm, CompartmentForm, RackForm, RackmoduleForm, BoxCompartmentForm, BoxRackForm, TubeForm, BioSampleForm, TypeForm, DocumentForm
 from django.shortcuts import redirect
+from django.db import transaction
+from django.contrib.auth.decorators import login_required
 from django.core import paginator
 import operator
 import os
@@ -28,6 +30,7 @@ def index(request):
         'index.html',
         context={'num_freezer':num_freezer,'num_biosample':num_biosample,}
     )
+
 
 """
 the path documents/ is here and in the model (Document) hardcoded maybe that is not the best solution

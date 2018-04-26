@@ -1,10 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.urls import reverse # Used to generate urls by reversing the URL pattern
 from multiselectfield import MultiSelectField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 import uuid
 from datetime import date
+
+"""
+Model to add fields to the User Model
+"""
 
 
 """

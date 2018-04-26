@@ -1,0 +1,8 @@
+*.pyc
+*~
+__pycache__
+samp
+db.sqlite3
+.DS_Store
+samplefreez/settings_secret.py
+/documents

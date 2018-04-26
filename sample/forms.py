@@ -1,9 +1,11 @@
 from django import forms
 from .models import Tube, Freezer, Compartment, Rack, Rackmodule, Box, Tube, BioSample, Type, Document
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.forms.forms import NON_FIELD_ERRORS
+
 
 # The freezer form
 class FreezerForm(forms.ModelForm):

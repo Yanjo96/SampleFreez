@@ -90,7 +90,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -135,3 +134,5 @@ LOGIN_REDIRECT_URL = '/'
 
 #Send the email to console for testing
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#AUTH_USER_MODEL = 'accounts.User'

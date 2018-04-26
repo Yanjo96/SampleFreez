@@ -1,3 +1,9 @@
-for installation run in your terminal
+Installation:
+
+Set up a Virtual Envirement with python3.5.2 or higher and the run:
 
 bash install.sh
+
+After that you can run the program with
+
+python manage.py runserver

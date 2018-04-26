@@ -1,3 +1,6 @@
+python>=3.5.2
+pip>=9.0.3
+
 django
 django-widget-tweaks
 django-multiselectfield
