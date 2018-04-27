@@ -14,7 +14,53 @@
   {% bootstrap_javascript jquery='full' %}
   {% bootstrap_messages %}
 
-  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  {% if user.is_authenticated %}
+    {% if user.theme == "cerulean" %}
+      <link rel="stylesheet" href="{% static 'css/cerulean/bootstrap.css' %}">
+    {% elif user.theme == "cosmo" %}
+      <link rel="stylesheet" href="{% static 'css/cosmo/bootstrap.css' %}">
+    {% elif user.theme == "cyborg" %}
+      <link rel="stylesheet" href="{% static 'css/cyborg/bootstrap.css' %}">
+    {% elif user.theme == "darkly" %}
+      <link rel="stylesheet" href="{% static 'css/darkly/bootstrap.css' %}">
+    {% elif user.theme == "flatly" %}
+      <link rel="stylesheet" href="{% static 'css/flatly/bootstrap.css' %}">
+    {% elif user.theme == "journal" %}
+      <link rel="stylesheet" href="{% static 'css/journal/bootstrap.css' %}">
+    {% elif user.theme == "lietra" %}
+      <link rel="stylesheet" href="{% static 'css/lietra/bootstrap.css' %}">
+    {% elif user.theme == "lumen" %}
+      <link rel="stylesheet" href="{% static 'css/lumen/bootstrap.css' %}">
+    {% elif user.theme == "lux" %}
+      <link rel="stylesheet" href="{% static 'css/lux/bootstrap.css' %}">
+    {% elif user.theme == "materia" %}
+      <link rel="stylesheet" href="{% static 'css/materia/bootstrap.css' %}">
+    {% elif user.theme == "minty" %}
+      <link rel="stylesheet" href="{% static 'css/minty/bootstrap.css' %}">
+    {% elif user.theme == "pulse" %}
+      <link rel="stylesheet" href="{% static 'css/pulse/bootstrap.css' %}">
+    {% elif user.theme == "sandstone" %}
+      <link rel="stylesheet" href="{% static 'css/sandstone/bootstrap.css' %}">
+    {% elif user.theme == "simplex" %}
+      <link rel="stylesheet" href="{% static 'css/simplex/bootstrap.css' %}">
+    {% elif user.theme == "sketchy" %}
+      <link rel="stylesheet" href="{% static 'css/sketchy/bootstrap.css' %}">
+    {% elif user.theme == "slate" %}
+      <link rel="stylesheet" href="{% static 'css/slate/bootstrap.css' %}">
+    {% elif user.theme == "solar" %}
+      <link rel="stylesheet" href="{% static 'css/solar/bootstrap.css' %}">
+    {% elif user.theme == "spacelab" %}
+      <link rel="stylesheet" href="{% static 'css/spacelab/bootstrap.css' %}">
+    {% elif user.theme == "superhero" %}
+      <link rel="stylesheet" href="{% static 'css/superhero/bootstrap.css' %}">
+    {% elif user.theme == "united" %}
+      <link rel="stylesheet" href="{% static 'css/united/bootstrap.css' %}">
+    {% else %}
+      <link rel="stylesheet" href="{% static 'css/yeti/bootstrap.css' %}">
+    {% endif %}
+  {% else %}
+    <link rel="stylesheet" href="{% static 'css/yeti/bootstrap.css' %}">
+  {% endif %}
   <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
   <script src="/static/js/jquery.min.js"></script>
   <script src="/static/js/jquery-ui.min.js"></script>

@@ -135,4 +135,4 @@ LOGIN_REDIRECT_URL = '/'
 #Send the email to console for testing
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-#AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'accounts.User'

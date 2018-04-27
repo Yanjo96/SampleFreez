@@ -14,7 +14,53 @@
   {% bootstrap_javascript jquery='full' %}
   {% bootstrap_messages %}
 
-  <link rel="stylesheet" href="{% static 'css/yeti/bootstrap.css' %}">
+  {% if user.is_authenticated %}
+    {% if user.theme == "cerulean" %}
+      <link rel="stylesheet" href="{% static 'css/cerulean/bootstrap.css' %}">
+    {% elif user.theme == "cosmo" %}
+      <link rel="stylesheet" href="{% static 'css/cosmo/bootstrap.css' %}">
+    {% elif user.theme == "cyborg" %}
+      <link rel="stylesheet" href="{% static 'css/cyborg/bootstrap.css' %}">
+    {% elif user.theme == "darkly" %}
+      <link rel="stylesheet" href="{% static 'css/darkly/bootstrap.css' %}">
+    {% elif user.theme == "flatly" %}
+      <link rel="stylesheet" href="{% static 'css/flatly/bootstrap.css' %}">
+    {% elif user.theme == "journal" %}
+      <link rel="stylesheet" href="{% static 'css/journal/bootstrap.css' %}">
+    {% elif user.theme == "lietra" %}
+      <link rel="stylesheet" href="{% static 'css/lietra/bootstrap.css' %}">
+    {% elif user.theme == "lumen" %}
+      <link rel="stylesheet" href="{% static 'css/lumen/bootstrap.css' %}">
+    {% elif user.theme == "lux" %}
+      <link rel="stylesheet" href="{% static 'css/lux/bootstrap.css' %}">
+    {% elif user.theme == "materia" %}
+      <link rel="stylesheet" href="{% static 'css/materia/bootstrap.css' %}">
+    {% elif user.theme == "minty" %}
+      <link rel="stylesheet" href="{% static 'css/minty/bootstrap.css' %}">
+    {% elif user.theme == "pulse" %}
+      <link rel="stylesheet" href="{% static 'css/pulse/bootstrap.css' %}">
+    {% elif user.theme == "sandstone" %}
+      <link rel="stylesheet" href="{% static 'css/sandstone/bootstrap.css' %}">
+    {% elif user.theme == "simplex" %}
+      <link rel="stylesheet" href="{% static 'css/simplex/bootstrap.css' %}">
+    {% elif user.theme == "sketchy" %}
+      <link rel="stylesheet" href="{% static 'css/sketchy/bootstrap.css' %}">
+    {% elif user.theme == "slate" %}
+      <link rel="stylesheet" href="{% static 'css/slate/bootstrap.css' %}">
+    {% elif user.theme == "solar" %}
+      <link rel="stylesheet" href="{% static 'css/solar/bootstrap.css' %}">
+    {% elif user.theme == "spacelab" %}
+      <link rel="stylesheet" href="{% static 'css/spacelab/bootstrap.css' %}">
+    {% elif user.theme == "superhero" %}
+      <link rel="stylesheet" href="{% static 'css/superhero/bootstrap.css' %}">
+    {% elif user.theme == "united" %}
+      <link rel="stylesheet" href="{% static 'css/united/bootstrap.css' %}">
+    {% else %}
+      <link rel="stylesheet" href="{% static 'css/yeti/bootstrap.css' %}">
+    {% endif %}
+  {% else %}
+    <link rel="stylesheet" href="{% static 'css/yeti/bootstrap.css' %}">
+  {% endif %}
   <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
   <script src="/static/js/jquery.min.js"></script>
   <script src="/static/js/jquery-ui.min.js"></script>
@@ -48,32 +94,6 @@
         <li class="nav-item">
             <a class="nav-link" href={% url "type" %}>Type</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Themes</a>
-          <div class="dropdown-menu">
-            <a href="#" data-theme="cerulean" class="theme-link dropdown-item">Cerulean</a>
-            <a href="#" data-theme="cosmo" class="theme-link dropdown-item">Cosmo</a>
-            <a href="#" data-theme="cyborg" class="theme-link dropdown-item">Cyborg</a>
-            <a href="#" data-theme="darkly" class="theme-link dropdown-item">Darkly</a>
-            <a href="#" data-theme="flatly" class="theme-link dropdown-item">Flatly</a>
-            <a href="#" data-theme="journal" class="theme-link dropdown-item">Journal</a>
-            <a href="#" data-theme="lietra" class="theme-link dropdown-item">Lietra</a>
-            <a href="#" data-theme="lumen" class="theme-link dropdown-item">Lumen</a>
-            <a href="#" data-theme="lux" class="theme-link dropdown-item">Lux</a>
-            <a href="#" data-theme="materia" class="theme-link dropdown-item">Materia</a>
-            <a href="#" data-theme="minty" class="theme-link dropdown-item">Minty</a>
-            <a href="#" data-theme="pulse" class="theme-link dropdown-item">Pulse</a>
-            <a href="#" data-theme="sandstone" class="theme-link dropdown-item">Sandstone</a>
-            <a href="#" data-theme="simplex" class="theme-link dropdown-item">Simplex</a>
-            <a href="#" data-theme="sketchy" class="theme-link dropdown-item">Sketchy</a>
-            <a href="#" data-theme="slate" class="theme-link dropdown-item">Slate</a>
-            <a href="#" data-theme="solar" class="theme-link dropdown-item">Solar</a>
-            <a href="#" data-theme="spacelab" class="theme-link dropdown-item">Spacelab</a>
-            <a href="#" data-theme="superhero" class="theme-link dropdown-item">Superhero</a>
-            <a href="#" data-theme="united" class="theme-link dropdown-item">United</a>
-            <a href="#" data-theme="yeti" class="theme-link dropdown-item">Yeti</a>
-          </div>
-        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
       <span style="display:block; width:10px;"></span>
@@ -86,14 +106,14 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">{{ user.get_full_name }}</a>
           <div class="dropdown-menu">
-            <a href={% url "my_account" %} class="dropdown-item">Settings</a>
+            <a href={% url "my_account" %} class="dropdown-item">My account</a>
             <a href={% url "users" %} class="dropdown-item">Users</a>
             <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
           </div>
         </li>
         {% else %}
           <li class="nav-item">
-            {% if request.path != "/accounts/logout/" %}
+            {% if request.path != "/accounts/logout/" and request.path != "/accounts/signup/" and request.path != "/accounts/login/" %}
               <a class="nav-link" href="{% url 'login' %}?next={{request.path}}">Login</a>
             {% else %}
               <a class="nav-link" href="{% url 'login' %}?next=/sample/">Login</a>
@@ -148,39 +168,5 @@
 </div>
 <span style="display:block; height:40px;"></span>
 
-<script>
-var themes = {
-  "yeti": "{% static 'css/yeti/bootstrap.css' %}",
-  "united": "{% static 'css/united/bootstrap.css' %}",
-  "solar": "{% static 'css/solar/bootstrap.css' %}",
-  "lietra":"{% static 'css/lietra/bootstrap.css' %}",
-  "lumen":"{% static 'css/lumen/bootstrap.css' %}",
-  "lux":"{% static 'css/lux/bootstrap.css' %}",
-  "materia":"{% static 'css/materia/bootstrap.css' %}",
-  "minty":"{% static 'css/minty/bootstrap.css' %}",
-  "pulse":"{% static 'css/pulse/bootstrap.css' %}",
-  "sandstone":"{% static 'css/sandstone/bootstrap.css' %}",
-  "simplex":"{% static 'css/simplex/bootstrap.css' %}",
-  "sketchy":"{% static 'css/sketchy/bootstrap.css' %}",
-  "slate":"{% static 'css/slate/bootstrap.css' %}",
-  "spacelab":"{% static 'css/spacelab/bootstrap.css' %}",
-  "superhero":"{% static 'css/superhero/bootstrap.css' %}",
-  "journal":"{% static 'css/journal/bootstrap.css' %}",
-  "flatly":"{% static 'css/flatly/bootstrap.css' %}",
-  "darkly":"{% static 'css/darkly/bootstrap.css' %}",
-  "cyborg":"{% static 'css/cyborg/bootstrap.css' %}",
-  "cosmo":"{% static 'css/cosmo/bootstrap.css' %}",
-  "cerulean":"{% static 'css/cerulean/bootstrap.css' %}",
-}
-
-$(function(){
-  var themesheet = $('<link href="'+themes['yeti']+'" rel="stylesheet" />');
-  themesheet.appendTo('head');
-  $('.theme-link').click(function(){
-    var themeurl = themes[$(this).attr('data-theme')];
-    themesheet.attr('href',themeurl);
-  });
-});
-</script>
 </body>
 </html>
